@@ -1,0 +1,52 @@
+<nav
+  id="wrapper"
+  class="flex items-center justify-between flex-wrap bg-red-600 p-6"
+>
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <img
+      id="logo"
+      src="/images/lang-logo.png"
+      width="54"
+      height="54"
+      class="fill-current h-8 w-8 mr-2"
+    >
+    <span id="title" class="font-semibold text-xl tracking-tight">
+      express-react-svelte-webcomponent
+    </span>
+  </div>
+
+  <div id="toggle-wrapper">
+    <button id="toggle-button">
+      <svg
+        id="toggle-svg"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+        class="fill-current h-3 w-3"
+      >
+        <title>Menu</title>
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="menu-wrapper">
+    <div id="menu">
+      <a href="/" class="menu-link">Home</a>
+      <a href="https://medium.com/" class="menu-link" target="_blank">
+        Medium
+      </a>
+      <a href="https://dev.to/" class="menu-link" target="_blank">
+        Dev Community
+      </a>
+      <a href="https://trueblog.net/" class="menu-link" target="_blank">
+        True Blog
+      </a>
+    </div>
+    <div>
+      <a id="dashboard-link" href="https://www.google.com/maps" target="_blank">
+        Google Maps
+      </a>
+    </div>
+  </div>
+
+</nav>

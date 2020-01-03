@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:host:not(:defined) {
+    @apply opacity-0;
+    transition: opacity 1.0s ease-in-out;
+}
+
+/*
+ * Fixing the element to the bottom of the page.
+ */
+:host {
+    @apply opacity-100 w-full fixed inset-auto bottom-0;
+    z-index: 1000;
+}
+
+#wrapper {
+    @apply text-gray-800 p-2;
+    transition: all 0.8s ease;
+}
+
+
+#wrapper a,
+#wrapper a:link,
+#wrapper a:visited {
+    @apply text-red-600 underline;
+}
+
+#wrapper a:hover,
+#wrapper a:active {
+    @apply text-red-400;
+}
+
+/*
+ * You can select only TOP LEVEL nodes, and
+ * there is no way to select SECOND LEVEL nodes.
+ * https://stackoverflow.com/questions/49678342/css-how-to-target-slotted-siblings-in-shadow-dom-root#answer-51098636
+ */
+div#message-wrapper slot[name=message] {
+    @apply text-gray-800 mb-1;
+}
+
+/*
+ * Added by JS when showing "#wrapper".
+ */
+.show {
+    transform: translateY(0px);
+}
+
+/*
+ * Added by JS when hiding "#wrapper".
+ */
+.hide {
+    transform: translateY(400px);
+}
+
+.btn {
+    @apply bg-red-500 text-red-100 mt-2;
+    padding: 0.4em 1.6em;
+}
+
+.btn:hover {
+    @apply bg-red-300 text-white;
+}
+
+/*
+ * In case <div> comes, make it inline.
+ */
+button#btn-accept slot[name=button-label] {
+    @apply inline;
+}
+

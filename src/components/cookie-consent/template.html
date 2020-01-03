@@ -1,0 +1,21 @@
+<div
+  id="wrapper"
+  class="w-full flex justify-center items-center flex-wrap bg-gray-100 text-gray-800 p-2"
+>
+  <div id="message-wrapper">
+    <slot name="message">
+      This website uses cookies.
+    </slot>
+    <a href="https://www.cookiesandyou.com/" target="_blank">
+      Learn More
+    </a>
+  </div>
+  <div
+    id="btn-wrapper"
+    class="w-full flex justify-center items-center flex-wrap"
+  >
+    <button id="btn-accept" class="btn">
+      <slot name="button-label">OK</slot>
+    </button>
+  </div>
+</div>

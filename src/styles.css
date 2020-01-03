@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Because the footer has -50px margin, we should
+ * explicitly have more space bellow the container.
+ */
+#container {
+    @apply mt-2 p-2;
+    margin-bottom: 220px;
+}
+
+.square {
+    @apply block bg-red-600; /* #e53e3e */
+    width: 18px;
+    height: 18px;
+}

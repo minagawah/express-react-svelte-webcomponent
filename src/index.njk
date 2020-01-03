@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>express-react-svelte-webcomponent</title>
+</head>
+
+<body>
+
+<burger-header></burger-header>
+
+<div id="container">
+
+  <div>
+    <div class="square"></div>
+  </div>
+
+  <img src="/images/pinecones.jpg" alt="Pine Cones" class="mt-2" />
+
+  <ul class="mt-2 pa-2">
+    <li><a href="/pizza">Pizza (React)</a></li>
+    <li><a href="/nacho">Nacho (Svelte)</a></li>
+    <li><a href="/contact">Contact (Express app)</a></li>
+  </ul>
+
+  <message-box
+    padding="2"
+    bgcolor="#edf2f7"
+    message="This is another Web Component"
+    class="mt-4"
+  />
+
+</div>
+
+${require('./partials/footer/template.njk')}
+
+<cookie-consent delay="2000">
+  <div slot="message">
+    This website uses cookies to ensure you get the best experience on our website.
+  </div>
+  <div slot="button-label">
+    Got it!
+  </div>
+</cookie-consent>
+
+<script src="https://unpkg.com/browse/@webcomponents/webcomponentsjs@2.4.0/webcomponents-bundle.js"></script>
+<script src="/components/cookieconsent.js"></script>
+<script src="/components/burger.js"></script>
+<script src="/components/messagebox.js"></script>
+
+</body>
+</html>

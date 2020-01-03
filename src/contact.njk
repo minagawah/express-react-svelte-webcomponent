@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact - express-react-svelte-webcomponent</title>
+</head>
+
+<body>
+
+<burger-header></burger-header>
+
+<div id="container">
+
+  <div class="text-2xl font-semibold">
+    Contact
+  </div>
+
+  <span id="datetime" class="bg-gray-200 text-gray-800 p-2 mt-2"></span>
+
+</div>
+
+${require('./partials/footer/template.njk')}
+
+<script src="/components/burger.js"></script>
+
+</body>
+</html>

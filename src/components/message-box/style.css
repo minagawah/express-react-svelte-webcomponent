@@ -1,0 +1,8 @@
+:host:not(:defined) {
+    @apply opacity-0;
+    transition: opacity 1.0s ease-in-out;
+}
+
+:host {
+    @apply opacity-100 text-gray-800;
+}
