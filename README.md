@@ -29,18 +29,42 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 
 ### Overview
 
-Webpack multi-compiler example to bundle builds for React, Svelte, Web Components, and normal Express view templates.
+Up to 2019, as many of us work in monolithic frontend projects,
+and our professional hunch tells us that we need
+more flexible way of making changes to hundreds of components everyday.
+So, it was quite natural for us to observe
+the rise of *micro frontends* as to satisfy our demands.
 
-A website with similar composition is found at:  
+One solution would be to have pages using different frameworks.
+In this project, we have multi-compiler configurations for Webpack
+to bundle React and Svelte apps at the same time.
+Another would be to include Web Compnents
+for wherever the pages demand light-weight tasks.
+For this, too, uses Webpack to build Web Components
+separately from other resources.
+
+However, as simple as it may sound,
+configuring Webpack to handle
+multiple frameworks is a laborious task.
+Especially, we usually want them running
+in different subdirectories,
+and you certainly must struggle with Webpack configurations
+to achieve which actually achieve the desired states.
+
+With the sample Webpack configuration presented here,
+I wish to help someone who are also suffering
+from the same situations.
+
+Basically, our Express app serves several routes,
+and their view templates are all bundled by HTML Webpack Plugin.  
+2 routes are specially reserved for React and Svelte apps,
+the paths for which being `/pizza` and `/nacho` respectively.  
+For ordinaly Express pages (which are `/` and `/contact`),
+we have some demonstrations for the use of Web Components.
+
+A working example with similar composition is found at:  
 [Demo](http://tokyo800.herokuapp.com/)
 
-Express app serving several routes,
-and their view templates are bundled by Webpack's HTML Webpack Plugin.  
-Two routes are reserved for React and Svelte apps,
-the paths being `/pizza` and `/nacho` respectively.  
-For the ordinary Express pages,
-we also have demonstrations of using Web Components
-that are also bundled by Webpack.
 
 ### Webpack Implementations
 
