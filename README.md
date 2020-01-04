@@ -29,32 +29,28 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 
 ### Overview
 
-As we enter 2020, many of us work with monolithic frontend projects,
-and our professional hunch tells us that we need
-flexibility as we make changes to hundreds
-of components we deal with everyday.
-So, it was quite natural for the dev community
-to observe last year the growing trends of having ***"micro frontends"***
+As we enter 2020, many of us deal with monolithic frontends,
+and our professional hunch tells us
+that we need more flexibility as to make changes
+to hundreds of components everyday.
+So, it was quite natural for web dev communities
+to observe last year the growing trends of ***"micro frontends"***
 as to satisfy the mentioned urge.
 
-One solution would be to have pages using different frameworks.
-In this project, we have multi-compiler configurations for Webpack
-to bundle React and Svelte apps at the same time.
-Another would be to include Web Compnents
-for wherever the pages demand light-weight tasks.
-For this, too, uses Webpack to build Web Components
-separately from other resources.
+One solution would be to have pages with different frameworks.
+This project configures Webpack multi-compilers
+to bundle both React and Svelte apps.
+Another would be to have Web Components for more lightweight tasks.
+For this one, too, we have Webpack bundles the codes.
 
 However, as simple as it may sound,
-configuring Webpack to handle
-multiple frameworks is a laborious task.
-Especially, we usually want them running
-in different subdirectories,
-and you certainly must struggle with Webpack configurations
-to actually achieve the desired states.  
-With the sample Webpack configuration presented here,
-I wish to help someone who are also suffering
-from the same situations.
+configuring Webpack to handle multiple frameworks is quite a laborious.
+Especially when we normally want these frameworks
+running in different subdirectories, and we can easily assume
+it means never-ending struggles with Webpack configurations.
+With a sample provided in this project,
+I hope to lessen the burdens for those
+who also suffer from the same situations.
 
 Basically, our Express app serves several routes,
 and their view templates are all bundled by HTML Webpack Plugin.  
