@@ -1,5 +1,6 @@
 const path = require('path');
 const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -10,15 +11,16 @@ const baseConfig = require('./webpack.base.js');
 const {
   DEV_SERVER_PORT,
   DEV_SERVER_HOST,
-  createWebpackEntries,
-  createWebpackCacheGroups,
-  createWebpackViewTemplates,
+  // createWebpackEntries,
+  // createWebpackCacheGroups,
+  // createWebpackViewTemplates,
 } = require('./build.config.js');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isAnal = !!process.env.ANALYZE; // I know I named it wrong...
 
 const DEV_SERVER_URI = `http://${DEV_SERVER_HOST}${DEV_SERVER_PORT ? ':' + DEV_SERVER_PORT : ''}`;
+const HOT_LOADER = `webpack-hot-middleware/client?path=${DEV_SERVER_URI}/__webpack_hmr`;
 
 const DEFAULT_EXCLUDE = [
   /node_modules/,
@@ -28,15 +30,29 @@ const DEFAULT_EXCLUDE = [
 ];
 
 module.exports = merge(baseConfig, {
-  entry: createWebpackEntries({
-    isProd,
-    url: DEV_SERVER_URI,
-    path: '/__webpack_hmr',
-  })([
-    ['footer', './src/partials/footer/index.js'],
-    ['top', './src/index.js'],
-    ['contact', './src/contact.js'],
-  ]),
+  // entry: createWebpackEntries({
+  //   isProd,
+  //   url: DEV_SERVER_URI,
+  //   path: '/__webpack_hmr',
+  // })([
+  //   ['footer', './src/partials/footer/index.js'],
+  //   ['top', './src/index.js'],
+  //   ['contact', './src/contact.js'],
+  // ]),
+  entry: {
+    footer: [
+      ...isProd ? [] : [HOT_LOADER],
+      './src/partials/footer/index.js'
+    ],
+    top: [
+      ...isProd ? [] : [HOT_LOADER],
+      './src/index.js'
+    ],
+    contact: [
+      ...isProd ? [] : [HOT_LOADER],
+      './src/contact.js'
+    ],
+  },
   output: {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name].js',
@@ -53,11 +69,27 @@ module.exports = merge(baseConfig, {
     splitChunks: {
       chunks: 'all', // Enables both `initial` and `async` module imports.
       minSize: 0,
-      cacheGroups: createWebpackCacheGroups([
-        ['anime', ['animejs']],
-        ['tailwind', ['tailwindcss']],
-        ['vendor-normal', ['!animejs', '!tailwindcss']]
-      ]),
+      // cacheGroups: createWebpackCacheGroups([
+      //   ['anime', ['animejs']],
+      //   ['tailwind', ['tailwindcss']],
+      //   ['vendor-normal', ['!animejs', '!tailwindcss']]
+      // ]),
+      cacheGroups: {
+        default: false, // Disable the default.
+        vendors: false, // Disable the default.
+        anime: {
+          name: 'anime',
+          test: new RegExp('[\\/]node_modules[\\/](animejs)[\\/]'),
+        },
+        tailwind: {
+          name: 'tailwind',
+          test: new RegExp('[\\/]node_modules[\\/](tailwindcss)[\\/]'),
+        },
+        'vendor-normal': {
+          name: 'vendor-normal',
+          test: new RegExp('[\\/]node_modules[\\/](!animejs)(!tailwindcss)[\\/]'),
+        },
+      },
     },
   },
   module: {
@@ -89,18 +121,28 @@ module.exports = merge(baseConfig, {
   },
   plugins: [
     // Express templates using HTML Webpack Plugin.
-    ...createWebpackViewTemplates({ rootDir: __dirname })([
-      [
-        './src/index.njk',
-        'dist/views/index.njk',
-        ['runtime-normal', 'vendor-normal', 'footer', 'top', 'anime']
-      ],
-      [
-        './src/contact.njk',
-        'dist/views/contact.njk',
-        ['runtime-normal', 'vendor-normal', 'footer', 'contact']
-      ],
-    ]),
+    // ...createWebpackViewTemplates({ rootDir: __dirname })([
+    //   [
+    //     './src/index.njk',
+    //     'dist/views/index.njk',
+    //     ['runtime-normal', 'vendor-normal', 'footer', 'top', 'anime']
+    //   ],
+    //   [
+    //     './src/contact.njk',
+    //     'dist/views/contact.njk',
+    //     ['runtime-normal', 'vendor-normal', 'footer', 'contact']
+    //   ],
+    // ]),
+    new HtmlWebpackPlugin({
+      template: './src/index.njk',
+      filename: path.resolve(__dirname, 'dist/views/index.njk'),
+      chunks: ['runtime-normal', 'vendor-normal', 'footer', 'top', 'anime'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/contact.njk',
+      filename: path.resolve(__dirname, 'dist/views/contact.njk'),
+      chunks: ['runtime-normal', 'vendor-normal', 'footer', 'contact'],
+    }),
     new CopyWebpackPlugin([
       { from: 'src/images', to: 'images' }, // Copy images to `dist/public/images`
     ]),

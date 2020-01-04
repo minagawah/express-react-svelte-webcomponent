@@ -44,7 +44,7 @@ Another would be to have Web Components for more lightweight tasks.
 For this one, too, we have Webpack bundles the codes.
 
 However, as simple as it may sound,
-configuring Webpack to handle multiple frameworks is quite a laborious.
+configuring Webpack to handle multiple frameworks is quite laborious.
 Especially when we normally want these frameworks
 running in different subdirectories, and we can easily assume
 it means never-ending struggles with Webpack configurations.

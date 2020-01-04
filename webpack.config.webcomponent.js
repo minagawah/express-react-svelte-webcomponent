@@ -3,15 +3,11 @@ const merge = require('webpack-merge');
 
 const baseConfig = require('./webpack.base.js');
 
-const {
-  createWebpackCacheGroups,
-} = require('./build.config.js');
-
 module.exports = merge(baseConfig, {
   entry: {
-    'cookieconsent': './src/components/cookie-consent/index.js',
-    'burger': './src/components/burger-header/index.js',
-    'messagebox': './src/components/message-box/index.js',
+    cookieconsent: './src/components/cookie-consent/index.js',
+    burger: './src/components/burger-header/index.js',
+    messagebox: './src/components/message-box/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist/public/components'),
