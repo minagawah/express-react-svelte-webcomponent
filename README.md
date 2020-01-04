@@ -410,7 +410,7 @@ Can't reexport the named export 'onMount' from non EcmaScript module (only defau
 Add `.mjs` to `extension` ***BEFORE*** the `.js` of your `webpack.config.svelte.js`:  
 https://github.com/sveltejs/svelte-loader/issues/82#issuecomment-485830738
 
-```json
+```js
 resolve: {
   extensions: ['.mjs', '.js', '.svelte']
 }
@@ -418,7 +418,7 @@ resolve: {
 
 Also, don't forget to add it to the `babel-loader` as well (optional):
 
-```json
+```js
 {
   test: /\.m?jsx?$/,
   exclude: /node_modules/,
