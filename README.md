@@ -29,11 +29,13 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 
 ### Overview
 
-Up to 2019, as many of us work in monolithic frontend projects,
+As we enter 2020, many of us work with monolithic frontend projects,
 and our professional hunch tells us that we need
-more flexible way of making changes to hundreds of components everyday.
-So, it was quite natural for us to observe
-the rise of *micro frontends* as to satisfy our demands.
+flexibility as we make changes to hundreds
+of components we deal with everyday.
+So, it was quite natural for the dev community
+to observe last year the growing trends of having *micro frontends*
+as to satisfy the mentioned urge.
 
 One solution would be to have pages using different frameworks.
 In this project, we have multi-compiler configurations for Webpack
