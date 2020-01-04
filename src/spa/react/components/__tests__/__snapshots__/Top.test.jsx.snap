@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders without crashing 1`] = `
-<div>
+<Fragment>
   <h1>
-    Home
+    Pizza
   </h1>
-</div>
+  <NavLink
+    to="/toppings"
+  >
+    Toppings
+  </NavLink>
+</Fragment>
 `;

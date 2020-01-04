@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { css, keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
 import tw from 'tailwind.macro';
+import PropTypes from 'prop-types';
 
 import logo from '../../../images/lang-logo.png';
 
@@ -17,6 +18,11 @@ const linkStyle = `
 
 const NormalLink = ({ to, children }) => (<a href={to} css={css`${linkStyle}`}>{children}</a>);
 const NavLink = styled(Link)`${linkStyle}`;
+
+NormalLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 const spin = keyframes`
   from {

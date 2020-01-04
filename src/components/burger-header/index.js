@@ -23,25 +23,32 @@ import template from './template.html';
 
 
 class BurgerHeader extends HTMLElement {
-  connectedCallback () {
+  constructor () {
+    super();
+
     const text = String.raw`${template}`;
     const css = styles.toString();
-
+    
     if (!text) throw new Error('No template');
     if (!css)  throw new Error('No styles');
 
     const el = document.createElement('template');
     el.innerHTML = `<style>${css}</style>${text}`;
 
-    // Note: You could do this in "constructor" like the one in "cookiecontent" component does...
-    const root = this.attachShadow({ mode: 'open' });
-    root.appendChild(el.content.cloneNode(true));
+    this.attachShadow({ mode: 'open' })
+      .appendChild(el.content.cloneNode(true));
+  }
 
-    this.wrapper = root.querySelector('#wrapper');
+  connectedCallback () {
+    console.log('[BurgerHeader] ++++ connectedCallback()');
+
+    if (!this.shadowRoot) throw new Error('No "shadowRoot"');
+
+    this.wrapper = this.shadowRoot.querySelector('#wrapper');
     if (!this.wrapper) throw new Error('Can\'t find \'#wrapper\'');
 
-    const btn = this.btn = root.querySelector('#toggle-button');
-    const menu = root.querySelector('#menu-wrapper');
+    const btn = this.btn = this.shadowRoot.querySelector('#toggle-button');
+    const menu = this.shadowRoot.querySelector('#menu-wrapper');
 
     if (btn && menu) {
       let visible = false;

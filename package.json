@@ -1,6 +1,6 @@
 {
   "name": "express-react-svelte-webcomponent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Webpack multi-compiler example to bundle builds for React, Svelte, Web Components, and normal Express view templates.",
   "engines": {
