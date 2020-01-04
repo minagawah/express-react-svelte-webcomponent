@@ -47,8 +47,8 @@ that are also bundled by Webpack.
 We currently have multi-compiler configurations:  
 (1) for normal JS apps with view template generations,  
 (2) for React,  
-(3) for Svelte,  
-and (3) for Web Components.  
+(3) for Svelte, and  
+(3) for Web Components.  
 To speed up the process of the compilers, using `parallel-webpack`.
 
 For (1) normal JS apps, we are using Webpack's HTML Webpack Plugin
