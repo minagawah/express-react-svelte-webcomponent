@@ -51,7 +51,7 @@ multiple frameworks is a laborious task.
 Especially, we usually want them running
 in different subdirectories,
 and you certainly must struggle with Webpack configurations
-to achieve which actually achieve the desired states.  
+to actually achieve the desired states.  
 With the sample Webpack configuration presented here,
 I wish to help someone who are also suffering
 from the same situations.
