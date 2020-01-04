@@ -7,18 +7,19 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 [3. What I Did](#what-i-did)  
 &nbsp; [3-1. Installed NPM Packages](#what-i-did-npm-packages)  
 [4. Notes](#notes)  
-&nbsp; [a. Bundle Only NPM Modules Wanted](#notes-exclude-npm-modules)  
-&nbsp; [b. Webpack4 Dynamic Import](#notes-webpack4-dynamic-import)  
-&nbsp; [c. Infinite Loop Using "webpack-hot-middleware"](#notes-infinite-loop-using-webpack-hot-middleware)  
-&nbsp; [d. Unexpected "import" (Jest)](#notes-unexpected-import)  
-&nbsp; [e. Watch Server Template Changes Without Restart](#notes-watch-template-changes)  
-&nbsp; [f. Uncaught ReferenceError: regeneratorRuntime is not defined](#notes-uncaught-reference-error-regenerateruntime)  
-&nbsp; [g. Using Node Profiler](#notes-node-profiler)  
-&nbsp; [h. HMR on view templates](#notes-hmr-on-view-templates)  
-&nbsp; [i. No HMR Found For Subdirectory](#notes-no-hmr-found-subdirectory)  
-&nbsp; [j. Svelte: new App fails](#notes-svelte-new-app)  
-&nbsp; [k. Svelte: Can't reexport the named export "onMount"](#notes-svelte-cant-reexport)  
-&nbsp; [l. React: 404 Not Found with React Router using Subdirectory](#notes-react-404-subdirectory)  
+&nbsp; [4-1. Webpack4 Dynamic Import](#notes-webpack4-dynamic-import)  
+&nbsp; [4-2. Unexpected "import" (Jest)](#notes-unexpected-import)  
+&nbsp; [4-3. Infinite Loop Using "webpack-hot-middleware"](#notes-infinite-loop-using-webpack-hot-middleware)  
+&nbsp; [4-4. Uncaught ReferenceError: regeneratorRuntime is not defined](#notes-uncaught-reference-error-regenerateruntime)  
+&nbsp; [4-5. Using Node Profiler](#notes-node-profiler)  
+&nbsp; [4-6. No HMR Found For Subdirectory](#notes-no-hmr-found-subdirectory)  
+&nbsp; [4-7. Svelte: new App fails](#notes-svelte-new-app)  
+&nbsp; [4-8. Svelte: Can't reexport the named export "onMount"](#notes-svelte-cant-reexport)  
+&nbsp; [4-9. React: 404 Not Found with React Router using Subdirectory](#notes-react-404-subdirectory)  
+&nbsp; [4-10. Notes for Old or Irrelevant Issues](#notes-others)  
+&nbsp; &nbsp; [a. Bundle Only NPM Modules Wanted](#notes-others-exclude-npm-modules)  
+&nbsp; &nbsp; [b. Watch Server Template Changes Without Restart](#notes-others-watch-template-changes)  
+&nbsp; &nbsp; [c. HMR on view templates](#notes-others-hmr-on-view-templates)  
 [5. LICENSE](#license)  
 
 ![screenshot](screenshot.png "Screenshot")
@@ -230,26 +231,12 @@ yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next reac
 ## 4. Notes
 
 
-<a id="notes-exclude-npm-modules"></a>
-### a. Bundle Only NPM Modules Wanted
-
-If you are bundling for the server
-(for which the current project does not,
-but we used to in the past),
-you do not want to include unwanted NPM modules included in your bundles.
-You may install `webpack-node-externals`
-and use `externals` option for your Webpack config.
-
-
-
 <a id="notes-webpack4-dynamic-import"></a>
-### b. Webpack4 Dynamic Import
+### 4-1. Webpack4 Dynamic Import
 
-Webpack understands dynamic import syntax (`import()`) just,
-but Babel complains that it doesn't.
-In order to avoid Babel's confusion about the syntax,
-you need `plugin-syntax-dynamic-import`.
-Once installed, you need the following in `babel.config.js`:
+Webpack understands the syntax `import()` just fine, but Babel complains.
+For Babel, you need `plugin-syntax-dynamic-import`.  
+Once installed, then in your `babel.config.js`:
 
 ```
 "plugins": [
@@ -257,13 +244,11 @@ Once installed, you need the following in `babel.config.js`:
 ]
 ```
 
-In the old time, we needed `babel-polyfill`
-in order to achieve dynamic module imports,
-and was a bit bothersome as it required two files:
-a file which attempts to import another module,
-and sort of a proxy file which actually loads one.
-Now, we no longer need it,
-and just setting `node` in `@babel/preset-env` would do.
+Once a time, we used `babel-polyfill` for dynamic module imports.
+Yet, it required us to have 2 steps: actual files to import others,
+and sort of proxy files for them.  
+Now, it has become much easier for we only need "node" as one of the build target.  
+In your `babel.config.js`:
 
 ```
 "presets": [
@@ -278,25 +263,9 @@ and just setting `node` in `@babel/preset-env` would do.
 ]
 ```
 
-<a id="notes-infinite-loop-using-webpack-hot-middleware"></a>
-### c. Infinite Loop Using `webpack-hot-middleware`
-
-While the main cause of is still unknown (could be Node version),
-sometimes we experience a browser to endlessly reload itself
-when using `webpack-hot-middleware`.
-To stop this from happenning, try to set an actual URL
-for `publickPath` instead of a relative path:
-
-https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
-
-```js
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: 'http://localhost:5000',
-}));
-```
 
 <a id="notes-unexpected-import"></a>
-### d. Unexpected `import` (Jest)
+### 4-2. Unexpected `import` (Jest)
 
 When `jest` does not understand `import` syntax,
 you need `@babel/plugin-transform-modules-commonjs`.
@@ -312,23 +281,27 @@ https://github.com/vuejs/vue-cli/issues/1584#issuecomment-519482294
 ]
 ```
 
-<a id="notes-watch-template-changes"></a>
-### e. Watch Server Template Changes Without Restart
 
-You may not.  
-You could either go with a pure React application or normal server-client application.
-If you choose server-client,
-consider using services like `nodemon` or `supervisor` to watch the template changes.  
-Compared to `nodemon`, `supervisor` has fewer dependencies.
-Install `supervisor`, and do this (in your `package.json`):
+<a id="notes-infinite-loop-using-webpack-hot-middleware"></a>
+### 4-3. Infinite Loop Using `webpack-hot-middleware`
 
-```json
-  "start": "supervisor -e html,js dist/server.js",
+While the main cause of is still unknown (could be Node version),
+sometimes we experience a browser to endlessly reload itself
+when using `webpack-hot-middleware`.
+To stop this from happenning, try to set an actual URL
+for `publickPath` instead of a relative path:
+
+https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
+
+```js
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: 'http://localhost:5000',
+}));
 ```
 
 
 <a id="notes-uncaught-reference-error-regenerateruntime"></a>
-### f. Uncaught ReferenceError: regeneratorRuntime is not defined
+### 4-4. Uncaught ReferenceError: regeneratorRuntime is not defined
 
 ```json
 "plugins": [
@@ -338,7 +311,7 @@ Install `supervisor`, and do this (in your `package.json`):
 
 
 <a id="notes-node-profiler"></a>
-### g. Using Node Profiler
+### 4-5. Using Node Profiler
 
 https://github.com/webpack/webpack/issues/4550#issuecomment-306750677
 
@@ -357,20 +330,8 @@ https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu
 
 
 
-<a id="notes-hmr-on-view-templates"></a>
-### h. HMR on view templates (not relevant to this project)  
-
-To detect changes in "*.njk" templates, we need a workaround.  
-https://github.com/jantimon/html-webpack-plugin/issues/100#issuecomment-368303060
-
-
-```js
-const ReloadPlugin = require('reload-html-webpack-plugin');
-```
-
-
 <a id="notes-no-hmr-found-subdirectory"></a>
-### i. No HMR Found For Subdirectory
+### 4-6. No HMR Found For Subdirectory
 
 If you output chunks to a subdirectory, having `__webpack_hmr`
 for webpack-hot-middleware path does not resolve,
@@ -399,7 +360,7 @@ webpackHotMiddleware(compiler, {
 
 
 <a id="notes-svelte-new-app"></a>
-### j. Svelte: new App fails
+### 4-7. Svelte: new App fails
 
 Although you `new App`, it fails.
 
@@ -432,7 +393,7 @@ Or, in `babel.config.js`:
 
 
 <a id="notes-svelte-cant-reexport"></a>
-### k. Svelte: Can't reexport the named export `onMount`
+### 4-8. Svelte: Can't reexport the named export `onMount`
 
 In your Svelte file, you try:
 
@@ -470,7 +431,7 @@ Also, don't forget to add it to the `babel-loader` as well (optional):
 
 
 <a id="notes-react-404-subdirectory"></a>
-### l. React: 404 Not Found with React Router using Subdirectory
+### 4-9. React: 404 Not Found with React Router using Subdirectory
 
 `dist/router.js`:
 
@@ -503,6 +464,54 @@ new webpack.DefinePlugin({
   'process.env.REACT_PUBLIC_URL': JSON.stringify(path.resolve('/pizza')),
 })
 ```
+
+
+
+
+<a id="notes-others"></a>
+### 4-10. Notes for Old or Irrelevant Issues
+
+Troubleshoots from the past for features that were once
+implemented in this project but are now gone.  
+Or, notes on irrelevant topics, but may help you
+with understanding the core issues associated.
+
+
+<a id="notes-others-exclude-npm-modules"></a>
+#### a. Bundle Only NPM Modules Wanted
+
+If you attempt to bundle `server.js` using Webpack,
+you do not want to include unwanted NPM modules.
+Then, use `webpack-node-externals`,
+and set it to "externals" option in your Webpack config.
+
+
+<a id="notes-others-watch-template-changes"></a>
+#### b. Watch Server Template Changes Without Restart
+
+You may not.  
+You could either go with a pure React application or normal server-client application.
+If you choose server-client,
+consider using services like `nodemon` or `supervisor` to watch the template changes.  
+Compared to `nodemon`, `supervisor` has fewer dependencies.
+Install `supervisor`, and do this (in your `package.json`):
+
+```json
+  "start": "supervisor -e html,js dist/server.js",
+```
+
+
+<a id="notes-others-hmr-on-view-templates"></a>
+#### c. HMR on view templates (not relevant to this project)  
+
+To detect changes in "*.njk" templates, we need a workaround.  
+https://github.com/jantimon/html-webpack-plugin/issues/100#issuecomment-368303060
+
+
+```js
+const ReloadPlugin = require('reload-html-webpack-plugin');
+```
+
 
 
 <a id="3-license"></a>
