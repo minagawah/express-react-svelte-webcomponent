@@ -34,7 +34,7 @@ and our professional hunch tells us that we need
 flexibility as we make changes to hundreds
 of components we deal with everyday.
 So, it was quite natural for the dev community
-to observe last year the growing trends of having *micro frontends*
+to observe last year the growing trends of having ***"micro frontends"***
 as to satisfy the mentioned urge.
 
 One solution would be to have pages using different frameworks.
@@ -51,8 +51,7 @@ multiple frameworks is a laborious task.
 Especially, we usually want them running
 in different subdirectories,
 and you certainly must struggle with Webpack configurations
-to achieve which actually achieve the desired states.
-
+to achieve which actually achieve the desired states.  
 With the sample Webpack configuration presented here,
 I wish to help someone who are also suffering
 from the same situations.
