@@ -24,6 +24,10 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 
 ![screenshot](screenshot.png "Screenshot")
 
+A working example with similar composition is found at:  
+[Demo](http://tokyo800.herokuapp.com/)
+
+
 <a id="about"></a>
 ## 1. About
 
@@ -53,9 +57,6 @@ I hope to lessen the burdens for those
 who also suffer from the same situations.
 
 ### Overview
-
-A working example with similar composition is found at:  
-[Demo](http://tokyo800.herokuapp.com/)
 
 We have Express app which serves several routes:
 
