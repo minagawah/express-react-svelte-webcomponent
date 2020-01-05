@@ -45,8 +45,10 @@ A working example with similar composition is found at:
 
 As we enter 2020, many of us deal with monolithic frontends,
 and our professional hunch tells us
-that we need more flexibility as to make changes
-to hundreds of components everyday.
+something must be done for all the pains and sacrifices made
+whenever make changes to hundreds of components.
+We want to casually make changes to the websites
+without caring too much about the risks to other components.
 So, it was quite natural for web dev communities
 to observe last year the growing trends of ***"micro frontends"***
 as to satisfy the mentioned urge.
