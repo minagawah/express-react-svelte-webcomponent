@@ -66,9 +66,9 @@ We have Express app which serves several routes:
 For (1) normal Express app, as you look into
 the HTML codes, you see the following tags:
 
-a. <burger-header>
-b. <cookie-consent>
-c. <message-box>
+a. &lt;burger-header&gt;
+b. &lt;cookie-consent&gt;
+c. &lt;message-box&gt;
 
 which are all custom elements
 to demonstrate the use of Web Components.  
