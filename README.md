@@ -811,5 +811,8 @@ const ReloadPlugin = require('reload-html-webpack-plugin');
 <a id="license"></a>
 ## 6. License
 
-Provided under [WTFPL](./LICENSE).  
-However, some NPM dependencies have license restrictions.
+Dual-licensed under either of the followings.  
+Choose at your option.
+
+- The UNLICENSE ([LICENSE.UNLICENSE](LICENSE.UNLICENSE))
+- MIT license ([LICENSE.MIT](LICENSE.MIT))
