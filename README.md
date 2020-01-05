@@ -115,10 +115,9 @@ For normal JS and React apps,
 detect changes, and you don't need to run builds again.
 
 For Svelte apps, it currently does not support HMR,
-but `webpack-dev-middleware` detects changes,
-so you simply reload the browser,
-and you see the changes are applied.
-
+and you must re-build, and reload the browser.  
+(while I can make `webpack-dev-middleware` to detect changes,
+I haven't done it yet)
 
 
 <a id="instructions"></a>
