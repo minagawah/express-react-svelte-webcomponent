@@ -27,7 +27,7 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 <a id="about"></a>
 ## 1. About
 
-### Overview
+### Goal
 
 As we enter 2020, many of us deal with monolithic frontends,
 and our professional hunch tells us
@@ -52,37 +52,72 @@ With a sample provided in this project,
 I hope to lessen the burdens for those
 who also suffer from the same situations.
 
-Basically, our Express app serves several routes,
-and their view templates are all bundled by HTML Webpack Plugin.  
-2 routes are specially reserved for React and Svelte apps,
-the paths for which being `/pizza` and `/nacho` respectively.  
-For ordinaly Express pages (which are `/` and `/contact`),
-we have some demonstrations for the use of Web Components.
+### Overview
 
 A working example with similar composition is found at:  
 [Demo](http://tokyo800.herokuapp.com/)
 
+We have Express app which serves several routes:
 
-### Webpack Implementations
+(1) `/` and `/contact`: Normal Express app  
+(2) `/pizza`: React SPA  
+(3) `/nacho`: Svelte SPA  
 
-We currently have multi-compiler configurations:  
-(1) for normal JS apps with view template generations,  
-(2) for React,  
-(3) for Svelte, and  
-(3) for Web Components.  
-To speed up the process of the compilers, using `parallel-webpack`.
+For (1) normal Express app, as you look into
+the HTML codes, you see the following tags:
 
-For (1) normal JS apps, we are using Webpack's HTML Webpack Plugin
-to generate `*.njk` (Nunjuck) templates for Express.
-Meaning, HMR does *NOT* work even if changes are made to view templates,
-and you need to `yarn build:dev` every time you make a change.
-However, this is so for view templates only,
-and `webpack-dev-middleware` *DOES* detect changes on any JS files,
-and you simply need to reload the page.  
-The similar situation applies to Web Components.
-Since Web Components are laoded at runtime by nature,
-there is no way of `webpack-dev-middleware` to detect changes
-for neither the templates nor JS codes.
+a. <burger-header>
+b. <cookie-consent>
+c. <message-box>
+
+which are all custom elements
+to demonstrate the use of Web Components.  
+So, there's that.
+
+(4) Web Components
+
+For all the above, we use *multi-compiler* mode of Webpack,
+which is configured in `webpack.config.js`,
+and basically requires another set of the following configurations:
+
+(1) `webpack.config.normal.js`  
+(2) `webpack.config.react.js`  
+(3) `webpack.config.svelte.js`  
+(4) `webpack.config.webcomponent.js`  
+
+To speed up the build, we use `parallel-webpack`
+instead of normal multi-compiler mode of Webpack.
+
+When we `yarn build:dev`, along with the bundling
+processes for JS and CSS, we use HTML Webpack Plugin
+to generate `*.njk` (Nunjucks) from templates,
+that are used as view templates for Express app
+when we run `dist/server.js`.
+
+As you can tell, once the view templates are generated,
+they are physically there in the `dist/views`,
+and neither `webpack-dev-middleware` nor `webpack-hot-middleware`
+can detect changes made to the source templates.  
+So, whenever you make changes to the source templates,
+you must run `yarn build:dev` to re-generate the view templates,
+and reload the browser.
+
+Similar goes for Web Components.
+Because Web Components are loaded runtime by nature,
+`webpack-dev-middleware` and `webpack-hot-middleware`
+cannot detect changes to any of the sources,
+and you must perform the build again
+just like you need it for Express view templates.
+
+For normal JS and React apps,
+`webpack-dev-middleware` and `webpack-hot-middleware`
+detect changes, and you don't need to run builds again.
+
+For Svelte apps, it currently does not support HMR,
+but `webpack-dev-middleware` detects changes,
+so you simply reload the browser,
+and you see the changes are applied.
+
 
 
 <a id="instructions"></a>

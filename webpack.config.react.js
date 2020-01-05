@@ -22,12 +22,6 @@ console.log(`(webpack.react) process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 // console.log(`(webpack.react) REACT_HOME: ${REACT_HOME}`);
 
 module.exports = merge(baseConfig, {
-  entry: {
-    'pizza': [
-      ...isProd ? [] : [HOT_LOADER],
-      './src/spa/react/index.jsx'
-    ],
-  },
   // entry: createWebpackEntries({
   //   isProd,
   //   url: DEV_SERVER_URI,
@@ -35,6 +29,12 @@ module.exports = merge(baseConfig, {
   // })([
   //   ['pizza', './src/spa/react/index.jsx'],
   // ]),
+  entry: {
+    pizza: [
+      ...isProd ? [] : [HOT_LOADER],
+      './src/spa/react/index.jsx'
+    ],
+  },
   output: {
     path: path.resolve(__dirname, 'dist/public/pizza'),
     filename: '[name].js',
