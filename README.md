@@ -16,17 +16,17 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; &nbsp; [(6) Web Components: No "class" Syntax](#notes-extra-web-components-without-class)  
 &nbsp; &nbsp; [(7) Web Components: Apply styles to "slot"](#notes-extra-apply-styles-to-slot)  
 &nbsp; &nbsp; [(8) CORS Errors Fetching from "localhost"](#notes-extra-cors-errors-for-localhost)  
+&nbsp; &nbsp; [(9) Using Node Profiler](#notes-extra-node-profiler)  
 [5. Troubles & Solutions](#troubles)  
 &nbsp; [5-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
 &nbsp; [5-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
 &nbsp; [5-3. Infinite Loop Using "webpack-hot-middleware"](#troubles-infinite-loop-using-webpack-hot-middleware)  
 &nbsp; [5-4. Uncaught ReferenceError: regeneratorRuntime is not defined](#troubles-uncaught-reference-error-regenerateruntime)  
-&nbsp; [5-5. Using Node Profiler](#troubles-node-profiler)  
-&nbsp; [5-6. No HMR Found For Subdirectory](#troubles-no-hmr-found-subdirectory)  
-&nbsp; [5-7. Svelte: new App fails](#troubles-svelte-new-app)  
-&nbsp; [5-8. Svelte: Can't reexport the named export "onMount"](#troubles-svelte-cant-reexport)  
-&nbsp; [5-9. React: 404 Not Found with React Router using Subdirectory](#troubles-react-404-subdirectory)  
-&nbsp; [5-10. Troubles: Irrelevant Issues)](#troubles-irrelevant)  
+&nbsp; [5-5. No HMR Found For Subdirectory](#troubles-no-hmr-found-subdirectory)  
+&nbsp; [5-6. Svelte: new App fails](#troubles-svelte-new-app)  
+&nbsp; [5-7. Svelte: Can't reexport the named export "onMount"](#troubles-svelte-cant-reexport)  
+&nbsp; [5-8. React: 404 Not Found with React Router using Subdirectory](#troubles-react-404-subdirectory)  
+&nbsp; [5-9. Troubles: Irrelevant Issues)](#troubles-irrelevant)  
 &nbsp; &nbsp; [(a) Bundle Only NPM Modules Wanted](#troubles-irrelevant-exclude-npm-modules)  
 &nbsp; &nbsp; [(b) Watch Server Template Changes Without Restart](#troubles-irrelevant-watch-template-changes)  
 &nbsp; &nbsp; [(c) HMR on view templates](#troubles-irrelevant-hmr-on-view-templates)  
@@ -519,6 +519,23 @@ What you probablly want is: https://cors-anywhere.herokuapp.com/
 
 
 
+<a id="notes-extra-node-profiler"></a>
+#### (9) Using Node Profiler
+
+If you have never used it before, it is time.  
+
+In this project, we have `yarn profile` in `package.json`:
+
+```json
+"profile": "node --inspect-brk node_modules/webpack/bin/webpack.js --config webpack.config.js",
+```
+
+Once execute the above command,
+open `chrome://inspect`, and start the profiler.  
+You can see what's going on with your webpack build process.
+
+For More:  
+https://github.com/webpack/webpack/issues/4550#issuecomment-306750677  
 
 
 <a id="troubles"></a>
@@ -606,28 +623,9 @@ app.use(webpackDevMiddleware(compiler, {
 ```
 
 
-<a id="troubles-node-profiler"></a>
-### 5-5. Using Node Profiler
-
-https://github.com/webpack/webpack/issues/4550#issuecomment-306750677
-
-We have the following command in `package.json` for `yarn profile:build:client`:
-
-```json
-"profile:build:client": "BABEL_ENV=client node --inspect-brk node_modules/webpack/bin/webpack.js --config webpack.client.js",
-```
-
-Open `chrome://inspect`, and start the profiler.  
-You can see what's going on with your webpack build process.
-
-
-How To Add Swap Space on Ubuntu 16.04 | DigitalOcean  
-https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-16-04
-
-
 
 <a id="troubles-no-hmr-found-subdirectory"></a>
-### 5-6. No HMR Found For Subdirectory
+### 5-5. No HMR Found For Subdirectory
 
 If you output chunks to a subdirectory, having `__webpack_hmr`
 for webpack-hot-middleware path does not resolve,
@@ -656,7 +654,7 @@ webpackHotMiddleware(compiler, {
 
 
 <a id="troubles-svelte-new-app"></a>
-### 5-7. Svelte: new App fails
+### 5-6. Svelte: new App fails
 
 Although you `new App`, it fails.
 
@@ -689,7 +687,7 @@ Or, in `babel.config.js`:
 
 
 <a id="troubles-svelte-cant-reexport"></a>
-### 5-8. Svelte: Can't reexport the named export `onMount`
+### 5-7. Svelte: Can't reexport the named export `onMount`
 
 In your Svelte file, you try:
 
@@ -727,7 +725,7 @@ Also, don't forget to add it to the `babel-loader` as well (optional):
 
 
 <a id="troubles-react-404-subdirectory"></a>
-### 5-9. React: 404 Not Found with React Router using Subdirectory
+### 5-8. React: 404 Not Found with React Router using Subdirectory
 
 `dist/router.js`:
 
@@ -765,7 +763,7 @@ new webpack.DefinePlugin({
 
 
 <a id="troubles-irrelevant"></a>
-### 5-10. Troubles: Irrelevant Issues
+### 5-9. Troubles: Irrelevant Issues
 
 Troubleshoots from the past for features that were once
 implemented in this project but are now gone.  
