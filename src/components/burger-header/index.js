@@ -21,7 +21,6 @@
 import styles from './style.css';
 import template from './template.html';
 
-
 class BurgerHeader extends HTMLElement {
   constructor () {
     super();
