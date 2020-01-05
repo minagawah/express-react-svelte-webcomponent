@@ -15,7 +15,7 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; &nbsp; [(5) Web Components: Load External CSS for Shadow DOMs](#notes-extra-external-css-fro-shadow-doms)  
 &nbsp; &nbsp; [(6) Web Components: No "class" Syntax](#notes-extra-web-components-without-class)  
 &nbsp; &nbsp; [(7) Web Components: Apply styles to "slot"](#notes-extra-apply-styles-to-slot)  
-&nbsp; &nbsp; [(8) CORS Errors Fetching from `localhost`](#notes-extra-cors-errors-for-localhost)  
+&nbsp; &nbsp; [(8) CORS Errors Fetching from "localhost"](#notes-extra-cors-errors-for-localhost)  
 [5. Troubles & Solutions](#troubles)  
 &nbsp; [5-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
 &nbsp; [5-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
@@ -304,8 +304,8 @@ yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next reac
 <a id="notes-extra"></a>
 ### 4-1. Extra Features Implemented
 
-Some features that are implemented in this project
-may help someone who has troubles implementing.
+Some features implemented in this project
+may help someone who has troubles implementing them.
 
 
 <a id="notes-extra-dynamic-import"></a>
@@ -352,7 +352,7 @@ to teach Babel of the syntax.
 
 `animejs` provides a build specific for ES codes:
 
-[./src/index.js](./src/index.js):
+[src/index.js](./src/index.js):
 
 ```js
 const animeES = await import('animejs/lib/anime.es.js');
@@ -380,12 +380,12 @@ You want Tailwind + Emotion in your React apps.
 <div key={o.id} css={css`${tw`flex flex-row`}`}>
 ```
 
-The topic is pretty much discussed in the following repository:  
-[cra-ts-emotion-tailwind-solution](https://github.com/minagawah/cra-ts-emotion-tailwind-solution)  
-or  
-[mini-react-201910](https://github.com/minagawah/mini-react-201910#in-depth-emotion-tailwind)
-but the basic idea is to choose "Babel macro" solution over "PostCSS" solution
-if you are using Jest to test your components.
+The topic is pretty much discussed in the following repository
+[cra-ts-emotion-tailwind-solution](https://github.com/minagawah/cra-ts-emotion-tailwind-solution)
+or
+[mini-react-201910](https://github.com/minagawah/mini-react-201910#in-depth-emotion-tailwind),
+but if you are using Jest to test your components,
+the basic idea is to choose "Babel macro" solution over "PostCSS" solution.
 
 
 
@@ -396,7 +396,7 @@ if you are using Jest to test your components.
 Many Express view templates allow you
 to include partial templates, and so does Nunjucks.
 
-[./src/index.njk](./src/index.njk):
+[src/index.njk](./src/index.njk):
 
 ```html
 ${require('./partials/footer/template.njk')}
@@ -461,15 +461,15 @@ class BurgerHeader extends HTMLElement {
 Some of you may prefer not using ES6 `class` syntax,
 but want to go the old fashion way (using `prototype`).
 
-[src/components/message-box/index.js](./src/components/message-box/index.js):  
+[src/components/message-box/index.js](./src/components/message-box/index.js)
 
 
 
 <a id="notes-extra-apply-styles-to-slot"></a>
 #### (7) Web Components: Apply styles to `slot`
 
-Applying styles to CSS classes within the custom elements are easy.
-Yet, you want styles for `slot` given from the parent.
+Applying styles to CSS classes within the custom elements are easy.  
+However, you want styles for `slot` given from the parent.
 
 Say, the parent gives you "message" slot.
 
@@ -483,7 +483,7 @@ Say, the parent gives you "message" slot.
 </cookie-consent>
 ```
 
-and you have in your custom element the following.
+and you have in your custom element the following
 
 [src/components/cookie-consent/template.html](./src/components/cookie-consent/template.html):  
 
@@ -511,8 +511,7 @@ div#message-wrapper slot[name=message] {
 #### (8) CORS Errors Fetching from `localhost`
 
 You run your app locally, and Chrome raises a CORS error
-when you attempt to `fetch` external resources.
-
+when you attempt to `fetch` external resources.  
 What you probablly want is: https://cors-anywhere.herokuapp.com/
 
 [src/spa/svelte/App.svelte](./src/spa/svelte/App.svelte)  
@@ -525,7 +524,7 @@ What you probablly want is: https://cors-anywhere.herokuapp.com/
 <a id="troubles"></a>
 ## 5. Troubles & Solutions
 
-Issues I encountered and their solutions.
+Issues I encountered, and possible solutions for them.
 
 
 <a id="troubles-webpack4-dynamic-import"></a>
