@@ -811,4 +811,5 @@ const ReloadPlugin = require('reload-html-webpack-plugin');
 <a id="license"></a>
 ## 6. License
 
-[LICENSE](./LICENSE)
+Provided under [WTFPL](./LICENSE).  
+However, some NPM dependencies have license restrictions.
