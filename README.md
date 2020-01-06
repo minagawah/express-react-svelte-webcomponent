@@ -329,9 +329,9 @@ and those packages are excluded from the bundled chunks.
 
 You need to specify "optimization.splitChunks.chunks"
 in your Webpack configuration.  
-Specifying "initial" lets you load modules only statically.  
-Specifying "async" lets you modules only dynamically.  
-Specifying "all" lets you load both.
+"initial" - Lets you load modules only statically.  
+"async" - Lets you modules only dynamically.  
+"all" - Lets you load both.
 
 [webpack.config.normal.js](./webpack.config.normal.js):
 
