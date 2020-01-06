@@ -16,7 +16,8 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; &nbsp; [(6) Web Components: No "class" Syntax](#notes-extra-web-components-without-class)  
 &nbsp; &nbsp; [(7) Web Components: Apply styles to "slot"](#notes-extra-apply-styles-to-slot)  
 &nbsp; &nbsp; [(8) CORS Errors Fetching from "localhost"](#notes-extra-cors-errors-for-localhost)  
-&nbsp; &nbsp; [(9) Using Node Profiler](#notes-extra-node-profiler)  
+&nbsp; &nbsp; [(9) React: Compose Multiple Context Providers](#notes-extra-compose-multiple-context-providers)  
+&nbsp; &nbsp; [(10) Using Node Profiler](#notes-extra-node-profiler)  
 [5. Troubles & Solutions](#troubles)  
 &nbsp; [5-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
 &nbsp; [5-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
@@ -288,13 +289,14 @@ yarn add --dev @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import
 - react
 - react-dom
 - react-router-dom
+- react-use
 - svelte
 - moment
 - ramda
 - animejs
 
 ```shell
-yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next react react-dom react-router-dom svelte moment ramda animejs
+yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next react react-dom react-router-dom react-use svelte moment ramda animejs
 ```
 
 
@@ -517,12 +519,50 @@ when you attempt to `fetch` external resources.
 What you probablly want is: https://cors-anywhere.herokuapp.com/
 
 [src/spa/svelte/App.svelte](./src/spa/svelte/App.svelte)  
-[src/lib/utils.js](./src/lib/utils.js)  
+[src/lib/cors.js](./src/lib/cors.js)  
 
+
+
+<a id="notes-extra-compose-multiple-context-providers"></a>
+#### (9) React: Compose Multiple Context Providers
+
+You have several React context providers.
+Instead of digging the JSX nests too deep,
+you want to compose them.
+
+[src/spa/react/index.jsx](./src/spa/react/index.jsx):  
+
+```js
+import { ProvideScreenSize } from './contexts/';
+
+ReactDOM.render(
+  <Router basename={basename}>
+    {composeContextProviders(
+      [
+        [ProvideScreenSize, {}]
+      ],
+      (<App />)
+    )}
+  </Router>,
+  document.querySelector('main')
+);
+```
+
+[src/spa/react/lib/utils.js](./src/spa/react/lib/utils.js):  
+
+```js
+export const composeContextProviders = (contexts, component) => {
+  return contexts.reduce((acc, [Provider, value]) => {
+    return (
+      <Provider value={value}>{acc}</Provider>
+    );
+  }, component);
+}
+```
 
 
 <a id="notes-extra-node-profiler"></a>
-#### (9) Using Node Profiler
+#### (10) Using Node Profiler
 
 If you have never used it before, it is time.  
 

@@ -25,7 +25,7 @@
 <script type="text/javascript">
 import { onMount } from 'svelte';
 
-import { corsAnywhere } from '../../lib/utils';
+import { corsAnywhere } from '../../lib';
 
 const API_ENDPOINT_URL = 'https://quotesondesign.com/wp-json/wp/v2/posts/';
 

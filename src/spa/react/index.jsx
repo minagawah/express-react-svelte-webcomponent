@@ -7,8 +7,10 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { Router, browserHistory } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+
+import { composeContextProviders } from './lib/';
+import { ProvideScreenSize } from './contexts/'; // ScreenSizeStateType
 
 import { App } from './components';
 
@@ -16,10 +18,23 @@ import './styles.css';
 
 const basename = process.env.REACT_PUBLIC_URL;
 
-// <Router history={browserHistory} basename={basename}>
+/*
+ * type AppliedContext = (React.FC | any)[];
+ * type AppliedContextList = AppliedContext[];
+ *
+ * [
+ *   [(ProvideScreenSize as React.FC), {} as ScreenSizeStateType]
+ * ] as AppliedContextList,
+ */
+
 ReactDOM.render(
   <Router basename={basename}>
-    <App />
+    {composeContextProviders( // Lets you compose multiple contexts.
+      [
+        [ProvideScreenSize, {}]
+      ],
+      (<App />)
+    )}
   </Router>,
   document.querySelector('main')
 );

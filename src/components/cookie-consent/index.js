@@ -1,7 +1,7 @@
 /* eslint no-undef: [1] */
 /* eslint no-unused-vars: [1] */
 
-import { cookieFactory } from '../../lib/utils';
+import { cookieFactory } from '../../lib/cookies';
 import styles from './style.css';
 import template from './template.html';
 
