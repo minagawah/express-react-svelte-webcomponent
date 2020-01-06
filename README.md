@@ -3,33 +3,33 @@
 Webpack multi-compiler example to bundle builds for React, Svelte, Web Components, and normal Express view templates.
 
 [1. About](#about)  
-[2. Instructions](#instructions)  
-[3. Extra Features Implemented](#extra)  
-&nbsp; [3-1. Dynamic (async) Import](#extra-dynamic-import)  
-&nbsp; [3-2. Use of "animejs" in ES modules](#extra-animejs)  
-&nbsp; [3-3. React: Tailwind + Emotion](#extra-tailwind-emotion)  
-&nbsp; [3-4. React: Compose Multiple Context Providers](#extra-compose-multiple-context-providers)  
-&nbsp; [3-5. Web Components: Load External CSS for Shadow DOMs](#extra-external-css-fro-shadow-doms)  
-&nbsp; [3-6. Web Components: No "class" Syntax](#extra-web-components-without-class)  
-&nbsp; [3-7. Web Components: Apply styles to "slot"](#extra-apply-styles-to-slot)  
-&nbsp; [3-8. Express: Include Nunjucks Partials](#extra-nunjucks-partials)  
-&nbsp; [3-9. CORS Errors Fetching from "localhost"](#extra-cors-errors-for-localhost)  
-&nbsp; [3-10. Using Node Profiler](#extra-node-profiler)  
-[4. Troubles & Solutions](#troubles)  
-&nbsp; [4-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
-&nbsp; [4-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
-&nbsp; [4-3. Infinite Loop Using "webpack-hot-middleware"](#troubles-infinite-loop-using-webpack-hot-middleware)  
-&nbsp; [4-4. Uncaught ReferenceError: regeneratorRuntime is not defined](#troubles-uncaught-reference-error-regenerateruntime)  
-&nbsp; [4-5. No HMR Found For Subdirectory](#troubles-no-hmr-found-subdirectory)  
-&nbsp; [4-6. Svelte: new App fails](#troubles-svelte-new-app)  
-&nbsp; [4-7. Svelte: Can't reexport the named export "onMount"](#troubles-svelte-cant-reexport)  
-&nbsp; [4-8. React: 404 Not Found with React Router using Subdirectory](#troubles-react-404-subdirectory)  
-[5. Notes](#notes)  
-[5-1. Irrelevant Issues](#notes-irrelevant)  
+[2. Extra Features Implemented](#extra)  
+&nbsp; [2-1. Dynamic (async) Import](#extra-dynamic-import)  
+&nbsp; [2-2. Use of "animejs" in ES modules](#extra-animejs)  
+&nbsp; [2-3. React: Tailwind + Emotion](#extra-tailwind-emotion)  
+&nbsp; [2-4. React: Compose Multiple Context Providers](#extra-compose-multiple-context-providers)  
+&nbsp; [2-5. Web Components: Load External CSS for Shadow DOMs](#extra-external-css-fro-shadow-doms)  
+&nbsp; [2-6. Web Components: No "class" Syntax](#extra-web-components-without-class)  
+&nbsp; [2-7. Web Components: Apply styles to "slot"](#extra-apply-styles-to-slot)  
+&nbsp; [2-8. Express: Include Nunjucks Partials](#extra-nunjucks-partials)  
+&nbsp; [2-9. CORS Errors Fetching from "localhost"](#extra-cors-errors-for-localhost)  
+&nbsp; [2-10. Using Node Profiler](#extra-node-profiler)  
+[3. Instructions](#instructions)  
+[4. Installed NPM Packages](#installed-npm-packages)  
+[5. Troubles & Solutions](#troubles)  
+&nbsp; [5-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
+&nbsp; [5-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
+&nbsp; [5-3. Infinite Loop Using "webpack-hot-middleware"](#troubles-infinite-loop-using-webpack-hot-middleware)  
+&nbsp; [5-4. Uncaught ReferenceError: regeneratorRuntime is not defined](#troubles-uncaught-reference-error-regenerateruntime)  
+&nbsp; [5-5. No HMR Found For Subdirectory](#troubles-no-hmr-found-subdirectory)  
+&nbsp; [5-6. Svelte: new App fails](#troubles-svelte-new-app)  
+&nbsp; [5-7. Svelte: Can't reexport the named export "onMount"](#troubles-svelte-cant-reexport)  
+&nbsp; [5-8. React: 404 Not Found with React Router using Subdirectory](#troubles-react-404-subdirectory)  
+[6. Notes](#notes)  
+&nbsp; [6-1. Irrelevant Issues](#notes-irrelevant)  
 &nbsp; &nbsp; [(a) Bundle Only NPM Modules Wanted](#notes-irrelevant-exclude-npm-modules)  
 &nbsp; &nbsp; [(b) Watch Server Template Changes Without Restart](#notes-irrelevant-watch-template-changes)  
 &nbsp; &nbsp; [(c) HMR on view templates](#notes-irrelevant-hmr-on-view-templates)  
-[6. Installed NPM Packages](#installed-npm-packages)  
 [7. LICENSE](#license)  
 
 A working example with similar composition is found at:  
@@ -41,7 +41,7 @@ A working example with similar composition is found at:
 <a id="about"></a>
 ## 1. About
 
-### Goal
+### Intention
 
 As we enter 2020, many of us deal with monolithic frontends,
 and our professional hunch tells us
@@ -132,62 +132,15 @@ and you must re-build, and reload the browser.
 I haven't done it yet)
 
 
-<a id="instructions"></a>
-## 2. Instructions
-
-### BUILD (development)
-
-```shell
-yarn build:dev
-```
-
-Regardless of the app kinds, `*.njk` (Nunjucks) templates are built to `dist/views`.
-The rest of the chunks are bundled to `dist/public`.
-All the chunks are bundled right bellow the directory,
-but Web Component codes are bundled to `dist/public/components` directory,
-React codes to `dist/public/pizza`,
-Svelte codes to `dist/public/nacho`.
-
-Given `NODE_ENV=development`, codes are bundled for `development`.  
-For all ES6 codes are transpiled in accord with the definitions in `babel.config.js`.
-
-
-### RUN (local)
-
-```shell
-yarn start
-```
-
-Starts Express app by runing `dist/server.js`.
-Uses `webpack-dev-middleware` and `webpack-hot-middleware`.
-
-You must run `yarn build:dev` beforehand, otherwise Express
-is not able to read `*.njk` (Nunjucks) templates.
-The same goes for Web Components.
-Whenever you make changes to Web Components,
-repeat the build.
-
-
-### BUILD (production)
-
-Ideas are the same as the ones for `development`, but for `production`:
-
-```shell
-yarn build
-```
-
-
-
-
 <a id="extra"></a>
-## 3. Extra Features Implemented
+## 2. Extra Features Implemented
 
 Some features implemented in this project
 may help someone who has troubles implementing them.
 
 
 <a id="extra-dynamic-import"></a>
-### 3-1. Dynamic (async) Import
+### 2-1. Dynamic (async) Import
 
 Sometimes you want certain NPM packages being loaded at runtime,
 and Webpack4 offers `import()` syntax to achieve this,
@@ -226,7 +179,7 @@ to teach Babel of the syntax.
 
 
 <a id="extra-animejs"></a>
-### 3-2. Use of `animejs` in ES modules
+### 2-2. Use of `animejs` in ES modules
 
 `animejs` provides a build specific for ES codes:
 
@@ -248,7 +201,7 @@ anime({
 
 
 <a id="extra-tailwind-emotion"></a>
-### 3-3. React: Tailwind + Emotion
+### 2-3. React: Tailwind + Emotion
 
 You want Tailwind + Emotion in your React apps.
 
@@ -269,7 +222,7 @@ the basic idea is to choose "Babel macro" solution over "PostCSS" solution.
 
 
 <a id="extra-compose-multiple-context-providers"></a>
-### 3-4. React: Compose Multiple Context Providers
+### 2-4. React: Compose Multiple Context Providers
 
 You have several React context providers.  
 Instead of digging the JSX nests too deep,
@@ -309,7 +262,7 @@ export const composeContextProviders = (contexts, component) => {
 
 
 <a id="extra-external-css-fro-shadow-doms"></a>
-### 3-5. Web Components: Load External CSS for Shadow DOMs
+### 2-5. Web Components: Load External CSS for Shadow DOMs
 
 `to-string-loader` is a handy loader for external CSS files
 to your Web Components to apply styles to Shadow DOMs.
@@ -360,7 +313,7 @@ class BurgerHeader extends HTMLElement {
 
 
 <a id="extra-web-components-without-class"></a>
-### 3-6. Web Components: No `class` Syntax
+### 2-6. Web Components: No `class` Syntax
 
 Some of you may prefer not using ES6 `class` syntax,
 but want to go the old fashion way (using `prototype`).
@@ -370,7 +323,7 @@ but want to go the old fashion way (using `prototype`).
 
 
 <a id="extra-apply-styles-to-slot"></a>
-### 3-7. Web Components: Apply styles to `slot`
+### 2-7. Web Components: Apply styles to `slot`
 
 Applying styles to CSS classes within the custom elements are easy.  
 However, you want styles for `slot` given from the parent.
@@ -412,7 +365,7 @@ div#message-wrapper slot[name=message] {
 
 
 <a id="extra-nunjucks-partials"></a>
-### 3-8. Express: Include Nunjucks Partials
+### 2-8. Express: Include Nunjucks Partials
 
 Many Express view templates allow you
 to include partial templates, and so does Nunjucks.
@@ -426,7 +379,7 @@ ${require('./partials/footer/template.njk')}
 
 
 <a id="extra-cors-errors-for-localhost"></a>
-### 3-9. CORS Errors Fetching from `localhost`
+### 2-9. CORS Errors Fetching from `localhost`
 
 You run your app locally, and Chrome raises a CORS error
 when you attempt to `fetch` external resources.  
@@ -438,7 +391,7 @@ What you probablly want is: https://cors-anywhere.herokuapp.com/
 
 
 <a id="extra-node-profiler"></a>
-### 3-10. Using Node Profiler
+### 2-10. Using Node Profiler
 
 If you have never used it before, it is time.  
 
@@ -457,281 +410,55 @@ https://github.com/webpack/webpack/issues/4550#issuecomment-306750677
 
 
 
-<a id="troubles"></a>
-## 4. Troubles & Solutions
+<a id="instructions"></a>
+## 3. Instructions
 
-Issues I encountered, and possible solutions for them.
+### BUILD (development)
 
-
-<a id="troubles-webpack4-dynamic-import"></a>
-### 4-1. Webpack4 Dynamic Import
-
-Webpack understands the syntax `import()` just fine, but Babel complains.
-For Babel, you need `plugin-syntax-dynamic-import`.  
-Once installed, then in your `babel.config.js`:
-
-```
-"plugins": [
-  "@babel/plugin-syntax-dynamic-import"
-]
+```shell
+yarn build:dev
 ```
 
-Once a time, we used `babel-polyfill` for dynamic module imports.
-Yet, it required us to have 2 steps: actual files to import others,
-and sort of proxy files for them.  
-Now, it has become much easier for we only need "node" as one of the build target.  
-In your `babel.config.js`:
+Regardless of the app kinds, `*.njk` (Nunjucks) templates are built to `dist/views`.
+The rest of the chunks are bundled to `dist/public`.
+All the chunks are bundled right bellow the directory,
+but Web Component codes are bundled to `dist/public/components` directory,
+React codes to `dist/public/pizza`,
+Svelte codes to `dist/public/nacho`.
 
-```
-"presets": [
-  [
-    "@babel/preset-env", {
-      "modules": false,
-      "targets": {
-        "node": "current"
-      }
-    }
-  ]
-]
+Given `NODE_ENV=development`, codes are bundled for `development`.  
+For all ES6 codes are transpiled in accord with the definitions in `babel.config.js`.
+
+
+### RUN (local)
+
+```shell
+yarn start
 ```
 
+Starts Express app by runing `dist/server.js`.
+Uses `webpack-dev-middleware` and `webpack-hot-middleware`.
 
-<a id="troubles-unexpected-import"></a>
-### 4-2. Unexpected `import` (Jest)
-
-When `jest` does not understand `import` syntax,
-you need `@babel/plugin-transform-modules-commonjs`.
-
-By the way, you could use `babel-jest`,
-but `babel-jest` is now integrated into Jest.
-
-https://github.com/vuejs/vue-cli/issues/1584#issuecomment-519482294
-
-```
-"plugins": [
-  "@babel/plugin-transform-modules-commonjs"
-]
-```
+You must run `yarn build:dev` beforehand, otherwise Express
+is not able to read `*.njk` (Nunjucks) templates.
+The same goes for Web Components.
+Whenever you make changes to Web Components,
+repeat the build.
 
 
-<a id="troubles-infinite-loop-using-webpack-hot-middleware"></a>
-### 4-3. Infinite Loop Using `webpack-hot-middleware`
+### BUILD (production)
 
-While the main cause of is still unknown (could be Node version),
-sometimes we experience a browser to endlessly reload itself
-when using `webpack-hot-middleware`.
-To stop this from happenning, try to set an actual URL
-for `publickPath` instead of a relative path:
+Ideas are the same as the ones for `development`, but for `production`:
 
-https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
-
-```js
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: 'http://localhost:5000',
-}));
+```shell
+yarn build
 ```
 
-
-<a id="troubles-uncaught-reference-error-regenerateruntime"></a>
-### 4-4. Uncaught ReferenceError: regeneratorRuntime is not defined
-
-```json
-"plugins": [
-  "@babel/plugin-transform-runtime"
-]
-```
-
-
-
-<a id="troubles-no-hmr-found-subdirectory"></a>
-### 4-5. No HMR Found For Subdirectory
-
-If you output chunks to a subdirectory, having `__webpack_hmr`
-for webpack-hot-middleware path does not resolve,
-and you must specify the subdirectory.
-For instance, we bunlde React codes to `dist/public/react`,
-so we explicitly tell Webpack where to look for the HMR loader.
-
-For `webpack.config.react.js`:
-
-```js
-entry: {
-  pizza: [
-    'webpack-hot-middleware/client?path=http://localhost:5000/react/__webpack_hmr`,
-    'src/spa/react/index.jsx'
-  ]
-}
-```
-
-For `dis/server.js`:
-
-```js
-webpackHotMiddleware(compiler, {
-  path: '/react/__webpack_hmr'
-})
-```
-
-
-<a id="troubles-svelte-new-app"></a>
-### 4-6. Svelte: new App fails
-
-Although you `new App`, it fails.
-
-```
-TypeError: Class constructor SvelteComponent cannot be invoked without 'new'
-```
-
-In `package.json`:
-
-```json
-"browserslist": [
-  "last 1 chrome versions"
-]
-```
-
-Or, in `babel.config.js`:
-
-```js
-"presets": [
-  [
-    "@babel/preset-env",
-    {
-      "targets": {
-        "browsers": ["last 1 chrome versions"]
-      }
-     }
-  ]
-]
-```
-
-
-<a id="troubles-svelte-cant-reexport"></a>
-### 4-7. Svelte: Can't reexport the named export `onMount`
-
-In your Svelte file, you try:
-
-```js
-import { onMount } from 'svelte';
-```
-
-and it gives you:
-
-```
-Can't reexport the named export 'onMount' from non EcmaScript module (only default export is available)
-```
-
-Add `.mjs` to `extension` ***BEFORE*** the `.js` of your `webpack.config.svelte.js`:  
-https://github.com/sveltejs/svelte-loader/issues/82#issuecomment-485830738
-
-```js
-resolve: {
-  extensions: ['.mjs', '.js', '.svelte']
-}
-```
-
-Also, don't forget to add it to the `babel-loader` as well (optional):
-
-```js
-{
-  test: /\.m?jsx?$/,
-  exclude: /node_modules/,
-  loader: 'babel-loader',
-  options: {
-    rootMode: 'upward'
-  }
-}
-```
-
-
-<a id="troubles-react-404-subdirectory"></a>
-### 4-8. React: 404 Not Found with React Router using Subdirectory
-
-`dist/router.js`:
-
-```js
-router.get(['/pizza', '/pizza/*'], (req, res) => res.render('pizza/index'));
-```
-
-Also, make sure you have "basename" set for your React Router:
-
-```js
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { App } from './components';
-
-const basename = process.env.REACT_PUBLIC_URL;
-
-ReactDOM.render(
-  <Router basename={basename}>
-    <App />
-  </Router>,
-  document.getElementById('root')
-);
-```
-
-and `process.env.REACT_PUBLIC_URL` is set in `webpack.config.react.js`
-using `webpack.DefinePlugin`:
-
-```js
-new webpack.DefinePlugin({
-  'process.env.REACT_PUBLIC_URL': JSON.stringify(path.resolve('/pizza')),
-})
-```
-
-
-
-
-<a id="notes"></a>
-## 5. Notes
-
-<a id="notes-irrelevant"></a>
-### 5-1. Irrelevant Issues
-
-Troubleshoots from the past for features that were once
-implemented in this project but are now gone.  
-Or, notes on irrelevant topics, but may help you
-with understanding the core issues associated.
-
-
-<a id="notes-irrelevant-exclude-npm-modules"></a>
-#### (a) Bundle Only NPM Modules Wanted
-
-If you attempt to bundle `server.js` using Webpack,
-you do not want to include unwanted NPM modules.
-Then, use `webpack-node-externals`,
-and set it to "externals" option in your Webpack config.
-
-
-<a id="notes-irrelevant-watch-template-changes"></a>
-#### (b) Watch Server Template Changes Without Restart
-
-You may not.  
-You could either go with a pure React application or normal server-client application.
-If you choose server-client,
-consider using services like `nodemon` or `supervisor` to watch the template changes.  
-Compared to `nodemon`, `supervisor` has fewer dependencies.
-Install `supervisor`, and do this (in your `package.json`):
-
-```json
-  "start": "supervisor -e html,js dist/server.js",
-```
-
-
-<a id="notes-irrelevant-hmr-on-view-templates"></a>
-#### (c) HMR on view templates (not relevant to this project)  
-
-To detect changes in "*.njk" templates, we need a workaround.  
-https://github.com/jantimon/html-webpack-plugin/issues/100#issuecomment-368303060
-
-
-```js
-const ReloadPlugin = require('reload-html-webpack-plugin');
-```
 
 
 
 <a id="installed-npm-packages"></a>
-## 6. Installed NPM Packages
+## 4. Installed NPM Packages
 
 Installed NPM packages follow:
 
@@ -845,6 +572,279 @@ yarn add --dev @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import
 
 ```shell
 yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next react react-dom react-router-dom react-use svelte moment ramda animejs
+```
+
+
+
+<a id="troubles"></a>
+## 5. Troubles & Solutions
+
+Issues I encountered, and possible solutions for them.
+
+
+<a id="troubles-webpack4-dynamic-import"></a>
+### 5-1. Webpack4 Dynamic Import
+
+Webpack understands the syntax `import()` just fine, but Babel complains.
+For Babel, you need `plugin-syntax-dynamic-import`.  
+Once installed, then in your `babel.config.js`:
+
+```
+"plugins": [
+  "@babel/plugin-syntax-dynamic-import"
+]
+```
+
+Once a time, we used `babel-polyfill` for dynamic module imports.
+Yet, it required us to have 2 steps: actual files to import others,
+and sort of proxy files for them.  
+Now, it has become much easier for we only need "node" as one of the build target.  
+In your `babel.config.js`:
+
+```
+"presets": [
+  [
+    "@babel/preset-env", {
+      "modules": false,
+      "targets": {
+        "node": "current"
+      }
+    }
+  ]
+]
+```
+
+
+<a id="troubles-unexpected-import"></a>
+### 5-2. Unexpected `import` (Jest)
+
+When `jest` does not understand `import` syntax,
+you need `@babel/plugin-transform-modules-commonjs`.
+
+By the way, you could use `babel-jest`,
+but `babel-jest` is now integrated into Jest.
+
+https://github.com/vuejs/vue-cli/issues/1584#issuecomment-519482294
+
+```
+"plugins": [
+  "@babel/plugin-transform-modules-commonjs"
+]
+```
+
+
+<a id="troubles-infinite-loop-using-webpack-hot-middleware"></a>
+### 5-3. Infinite Loop Using `webpack-hot-middleware`
+
+While the main cause of is still unknown (could be Node version),
+sometimes we experience a browser to endlessly reload itself
+when using `webpack-hot-middleware`.
+To stop this from happenning, try to set an actual URL
+for `publickPath` instead of a relative path:
+
+https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
+
+```js
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: 'http://localhost:5000',
+}));
+```
+
+
+<a id="troubles-uncaught-reference-error-regenerateruntime"></a>
+### 5-4. Uncaught ReferenceError: regeneratorRuntime is not defined
+
+```json
+"plugins": [
+  "@babel/plugin-transform-runtime"
+]
+```
+
+
+
+<a id="troubles-no-hmr-found-subdirectory"></a>
+### 5-5. No HMR Found For Subdirectory
+
+If you output chunks to a subdirectory, having `__webpack_hmr`
+for webpack-hot-middleware path does not resolve,
+and you must specify the subdirectory.
+For instance, we bunlde React codes to `dist/public/react`,
+so we explicitly tell Webpack where to look for the HMR loader.
+
+For `webpack.config.react.js`:
+
+```js
+entry: {
+  pizza: [
+    'webpack-hot-middleware/client?path=http://localhost:5000/react/__webpack_hmr`,
+    'src/spa/react/index.jsx'
+  ]
+}
+```
+
+For `dis/server.js`:
+
+```js
+webpackHotMiddleware(compiler, {
+  path: '/react/__webpack_hmr'
+})
+```
+
+
+<a id="troubles-svelte-new-app"></a>
+### 5-6. Svelte: new App fails
+
+Although you `new App`, it fails.
+
+```
+TypeError: Class constructor SvelteComponent cannot be invoked without 'new'
+```
+
+In `package.json`:
+
+```json
+"browserslist": [
+  "last 1 chrome versions"
+]
+```
+
+Or, in `babel.config.js`:
+
+```js
+"presets": [
+  [
+    "@babel/preset-env",
+    {
+      "targets": {
+        "browsers": ["last 1 chrome versions"]
+      }
+     }
+  ]
+]
+```
+
+
+<a id="troubles-svelte-cant-reexport"></a>
+### 5-7. Svelte: Can't reexport the named export `onMount`
+
+In your Svelte file, you try:
+
+```js
+import { onMount } from 'svelte';
+```
+
+and it gives you:
+
+```
+Can't reexport the named export 'onMount' from non EcmaScript module (only default export is available)
+```
+
+Add `.mjs` to `extension` ***BEFORE*** the `.js` of your `webpack.config.svelte.js`:  
+https://github.com/sveltejs/svelte-loader/issues/82#issuecomment-485830738
+
+```js
+resolve: {
+  extensions: ['.mjs', '.js', '.svelte']
+}
+```
+
+Also, don't forget to add it to the `babel-loader` as well (optional):
+
+```js
+{
+  test: /\.m?jsx?$/,
+  exclude: /node_modules/,
+  loader: 'babel-loader',
+  options: {
+    rootMode: 'upward'
+  }
+}
+```
+
+
+<a id="troubles-react-404-subdirectory"></a>
+### 5-8. React: 404 Not Found with React Router using Subdirectory
+
+`dist/router.js`:
+
+```js
+router.get(['/pizza', '/pizza/*'], (req, res) => res.render('pizza/index'));
+```
+
+Also, make sure you have "basename" set for your React Router:
+
+```js
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { App } from './components';
+
+const basename = process.env.REACT_PUBLIC_URL;
+
+ReactDOM.render(
+  <Router basename={basename}>
+    <App />
+  </Router>,
+  document.getElementById('root')
+);
+```
+
+and `process.env.REACT_PUBLIC_URL` is set in `webpack.config.react.js`
+using `webpack.DefinePlugin`:
+
+```js
+new webpack.DefinePlugin({
+  'process.env.REACT_PUBLIC_URL': JSON.stringify(path.resolve('/pizza')),
+})
+```
+
+
+
+
+<a id="notes"></a>
+## 6. Notes
+
+<a id="notes-irrelevant"></a>
+### 6-1. Irrelevant Issues
+
+Troubleshoots from the past for features that were once
+implemented in this project but are now gone.  
+Or, notes on irrelevant topics, but may help you
+with understanding the core issues associated.
+
+
+<a id="notes-irrelevant-exclude-npm-modules"></a>
+#### (a) Bundle Only NPM Modules Wanted
+
+If you attempt to bundle `server.js` using Webpack,
+you do not want to include unwanted NPM modules.
+Then, use `webpack-node-externals`,
+and set it to "externals" option in your Webpack config.
+
+
+<a id="notes-irrelevant-watch-template-changes"></a>
+#### (b) Watch Server Template Changes Without Restart
+
+You may not.  
+You could either go with a pure React application or normal server-client application.
+If you choose server-client,
+consider using services like `nodemon` or `supervisor` to watch the template changes.  
+Compared to `nodemon`, `supervisor` has fewer dependencies.
+Install `supervisor`, and do this (in your `package.json`):
+
+```json
+  "start": "supervisor -e html,js dist/server.js",
+```
+
+
+<a id="notes-irrelevant-hmr-on-view-templates"></a>
+#### (c) HMR on view templates (not relevant to this project)  
+
+To detect changes in "*.njk" templates, we need a workaround.  
+https://github.com/jantimon/html-webpack-plugin/issues/100#issuecomment-368303060
+
+
+```js
+const ReloadPlugin = require('reload-html-webpack-plugin');
 ```
 
 
