@@ -9,7 +9,7 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; [3-2. Use of "animejs" in ES modules](#extra-animejs)  
 &nbsp; [3-3. React: Tailwind + Emotion](#extra-tailwind-emotion)  
 &nbsp; [3-4. React: Compose Multiple Context Providers](#extra-compose-multiple-context-providers)  
-&nbsp; [3-5. React: Using "useDebounce" of "react-use"](#extra-use-debounce)  
+&nbsp; [3-5. React (Hooks): Using "useDebounce" of "react-use"](#extra-use-debounce)  
 &nbsp; [3-6. React: Using "scrollmonitor-react"](#extra-scrollmonitor)  
 &nbsp; [3-7. Web Components: Load External CSS for Shadow DOMs](#extra-external-css-fro-shadow-doms)  
 &nbsp; [3-8. Web Components: No "class" Syntax](#extra-web-components-without-class)  
@@ -325,7 +325,7 @@ export const composeContextProviders = (contexts, component) => {
 
 
 <a id="extra-use-debounce"></a>
-### 3-5. React: Using `useDebounce` of `react-use`
+### 3-5. React (Hooks): Using `useDebounce` of `react-use`
 
 [./src/spa/react/components/App.jsx](./src/spa/react/components/App.jsx)
 
