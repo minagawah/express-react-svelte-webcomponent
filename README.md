@@ -3,9 +3,9 @@
 Webpack multi-compiler example to bundle builds for React, Svelte, Web Components, and normal Express view templates.
 
 [1. About](#about)  
-[2. Instructions](#instructions)  
+[2. Install & Build](#install-and-build)  
 [3. Extra Features Implemented](#extra)  
-&nbsp; [3-1. Dynamic (async) Import](#extra-dynamic-import)  
+&nbsp; [3-1. Webpack Dynamic (async) Import](#extra-dynamic-import)  
 &nbsp; [3-2. Use of "animejs" in ES modules](#extra-animejs)  
 &nbsp; [3-3. React: Tailwind + Emotion](#extra-tailwind-emotion)  
 &nbsp; [3-4. React: Compose Multiple Context Providers](#extra-compose-multiple-context-providers)  
@@ -17,7 +17,7 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; [3-10. Using Node Profiler](#extra-node-profiler)  
 [4. Installed NPM Packages](#installed-npm-packages)  
 [5. Troubles & Solutions](#troubles)  
-&nbsp; [5-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
+&nbsp; [5-1. Jest Does Not Understand "import()"](#troubles-jest-does-not-understand-import)  
 &nbsp; [5-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
 &nbsp; [5-3. Infinite Loop Using "webpack-hot-middleware"](#troubles-infinite-loop-using-webpack-hot-middleware)  
 &nbsp; [5-4. Uncaught ReferenceError: regeneratorRuntime is not defined](#troubles-uncaught-reference-error-regenerateruntime)  
@@ -132,8 +132,8 @@ and you must re-build, and reload the browser.
 I haven't done it yet)
 
 
-<a id="instructions"></a>
-## 2. Instructions
+<a id="install-and-build"></a>
+## 2. Install & Build
 
 ### BUILD (development)
 
@@ -187,13 +187,13 @@ may help someone who has troubles implementing them.
 
 
 <a id="extra-dynamic-import"></a>
-### 3-1. Dynamic (async) Import
+### 3-1. Webpack Dynamic (async) Import
 
 Sometimes you want certain NPM packages being loaded at runtime,
 and Webpack4 offers `import()` syntax to achieve this,
 and those packages are excluded from the bundled chunks.
 
-[src/index.js](./src/index.js):
+[./src/index.js](./src/index.js)
 
 ```js
 (async () => {
@@ -219,7 +219,8 @@ optimization: {
 
 You also need to know `import()` syntax is valid only to Webpack4,
 and Babel does not understand the syntax.
-See [4-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)
+See
+[5-1. Jest Does Not Understand "import()"](#troubles-jest-does-not-understand-import)
 for how you need `@babel/plugin-syntax-dynamic-import`
 to teach Babel of the syntax.
 
@@ -230,7 +231,7 @@ to teach Babel of the syntax.
 
 `animejs` provides a build specific for ES codes:
 
-[src/index.js](./src/index.js):
+[./src/index.js](./src/index.js)
 
 ```js
 const animeES = await import('animejs/lib/anime.es.js');
@@ -252,7 +253,7 @@ anime({
 
 You want Tailwind + Emotion in your React apps.
 
-[src/spa/react/components/Toppings.jsx](./src/spa/react/components/Toppings.jsx):  
+[./src/spa/react/components/Toppings.jsx](./src/spa/react/components/Toppings.jsx)
 
 ```html
 <div key={o.id} css={css`${tw`flex flex-row`}`}>
@@ -275,7 +276,7 @@ You have several React context providers.
 Instead of digging the JSX nests too deep,
 you want to compose them.
 
-[src/spa/react/index.jsx](./src/spa/react/index.jsx):  
+[./src/spa/react/index.jsx](./src/spa/react/index.jsx)
 
 ```js
 import { composeContextProviders } from './lib/';
@@ -294,7 +295,7 @@ ReactDOM.render(
 );
 ```
 
-[src/spa/react/lib/utils.js](./src/spa/react/lib/utils.js):  
+[./src/spa/react/lib/utils.js](./src/spa/react/lib/utils.js)
 
 ```js
 export const composeContextProviders = (contexts, component) => {
@@ -314,7 +315,7 @@ export const composeContextProviders = (contexts, component) => {
 `to-string-loader` is a handy loader for external CSS files
 to your Web Components to apply styles to Shadow DOMs.
 
-[webpack.config.webcomponent.js](./webpack.config.webcomponent.js):
+[./webpack.config.webcomponent.js](./webpack.config.webcomponent.js)
 
 ```js
 module: {
@@ -332,8 +333,8 @@ module: {
 }
 ```
 
-[src/components/burger-header/index.js](./src/components/burger-header/index.js):  
-[src/components/cookie-consent/index.js](./src/components/cookie-consent/index.js):  
+[./src/components/burger-header/index.js](./src/components/burger-header/index.js)  
+[./src/components/cookie-consent/index.js](./src/components/cookie-consent/index.js)
 
 
 ```js
@@ -363,9 +364,8 @@ class BurgerHeader extends HTMLElement {
 ### 3-6. Web Components: No `class` Syntax
 
 Some of you may prefer not using ES6 `class` syntax,
-but want to go the old fashion way (using `prototype`).
-
-[src/components/message-box/index.js](./src/components/message-box/index.js)
+but want to go the old fashion way (using `prototype`).  
+[./src/components/message-box/index.js](./src/components/message-box/index.js)
 
 
 
@@ -377,7 +377,7 @@ However, you want styles for `slot` given from the parent.
 
 Say, the parent gives you "message" slot.
 
-[src/index.njk](./src/index.njk):  
+[./src/index.njk](./src/index.njk)
 
 ```html
 <cookie-consent>
@@ -389,7 +389,7 @@ Say, the parent gives you "message" slot.
 
 and you have in your custom element the following
 
-[src/components/cookie-consent/template.html](./src/components/cookie-consent/template.html):  
+[./src/components/cookie-consent/template.html](./src/components/cookie-consent/template.html)
 
 ```html
 <div id="message-wrapper">
@@ -401,7 +401,7 @@ and you have in your custom element the following
 
 and here is the selector syntax you want.
 
-[src/components/cookie-consent/style.css](./src/components/cookie-consent/style.css):  
+[./src/components/cookie-consent/style.css](./src/components/cookie-consent/style.css)
 
 ```css
 div#message-wrapper slot[name=message] {
@@ -417,7 +417,7 @@ div#message-wrapper slot[name=message] {
 Many Express view templates allow you
 to include partial templates, and so does Nunjucks.
 
-[src/index.njk](./src/index.njk):
+[./src/index.njk](./src/index.njk)
 
 ```html
 ${require('./partials/footer/template.njk')}
@@ -432,17 +432,17 @@ You run your app locally, and Chrome raises a CORS error
 when you attempt to `fetch` external resources.  
 What you probablly want is: https://cors-anywhere.herokuapp.com/
 
-[src/spa/svelte/App.svelte](./src/spa/svelte/App.svelte)  
-[src/lib/cors.js](./src/lib/cors.js)  
+[./src/spa/svelte/App.svelte](./src/spa/svelte/App.svelte)  
+[./src/lib/cors.js](./src/lib/cors.js)  
 
 
 
 <a id="extra-node-profiler"></a>
 ### 3-10. Using Node Profiler
 
-If you have never used it before, it is time.  
+If you have never used it before, it is probably the time.  
 
-In this project, we have `yarn profile` in `package.json`:
+[./package.json](./package.json)
 
 ```json
 "profile": "node --inspect-brk node_modules/webpack/bin/webpack.js --config webpack.config.js",
@@ -582,14 +582,16 @@ yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next reac
 Issues I encountered, and possible solutions for them.
 
 
-<a id="troubles-webpack4-dynamic-import"></a>
-### 5-1. Webpack4 Dynamic Import
+<a id="troubles-jest-does-not-understand-import"></a>
+### 5-1. Jest Does Not Understand `import()` (Webpack Dynamic Import)
 
 Webpack understands the syntax `import()` just fine, but Babel complains.
 For Babel, you need `plugin-syntax-dynamic-import`.  
 Once installed, then in your `babel.config.js`:
 
-```
+[./babel.config.js](./babel.config.js)
+
+```js
 "plugins": [
   "@babel/plugin-syntax-dynamic-import"
 ]
@@ -601,7 +603,7 @@ and sort of proxy files for them.
 Now, it has become much easier for we only need "node" as one of the build target.  
 In your `babel.config.js`:
 
-```
+```js
 "presets": [
   [
     "@babel/preset-env", {
@@ -621,16 +623,19 @@ In your `babel.config.js`:
 When `jest` does not understand `import` syntax,
 you need `@babel/plugin-transform-modules-commonjs`.
 
-By the way, you could use `babel-jest`,
-but `babel-jest` is now integrated into Jest.
+[./babel.config.js](./babel.config.js)
 
-https://github.com/vuejs/vue-cli/issues/1584#issuecomment-519482294
 
 ```
 "plugins": [
   "@babel/plugin-transform-modules-commonjs"
 ]
 ```
+
+By the way, you could use `babel-jest`,
+but `babel-jest` is now integrated into Jest.  
+https://github.com/vuejs/vue-cli/issues/1584#issuecomment-519482294
+
 
 
 <a id="troubles-infinite-loop-using-webpack-hot-middleware"></a>
@@ -642,7 +647,7 @@ when using `webpack-hot-middleware`.
 To stop this from happenning, try to set an actual URL
 for `publickPath` instead of a relative path:
 
-https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
+[./dist/server.js](./dist/server.js)
 
 ```js
 app.use(webpackDevMiddleware(compiler, {
@@ -650,9 +655,13 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 ```
 
+https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
+
 
 <a id="troubles-uncaught-reference-error-regenerateruntime"></a>
 ### 5-4. Uncaught ReferenceError: regeneratorRuntime is not defined
+
+[./babel.config.js](./babel.config.js)
 
 ```json
 "plugins": [
@@ -671,7 +680,7 @@ and you must specify the subdirectory.
 For instance, we bunlde React codes to `dist/public/react`,
 so we explicitly tell Webpack where to look for the HMR loader.
 
-For `webpack.config.react.js`:
+[./webpack.config.react.js](webpack.config.react.js)
 
 ```js
 entry: {
@@ -682,7 +691,7 @@ entry: {
 }
 ```
 
-For `dis/server.js`:
+[./dist/server.js](./dist/server.js)
 
 ```js
 webpackHotMiddleware(compiler, {
@@ -700,7 +709,7 @@ Although you `new App`, it fails.
 TypeError: Class constructor SvelteComponent cannot be invoked without 'new'
 ```
 
-In `package.json`:
+[./package.json](./package.json)
 
 ```json
 "browserslist": [
@@ -708,7 +717,7 @@ In `package.json`:
 ]
 ```
 
-Or, in `babel.config.js`:
+Or, in your [babel.config.js](./babel.config.js)
 
 ```js
 "presets": [
@@ -739,8 +748,10 @@ and it gives you:
 Can't reexport the named export 'onMount' from non EcmaScript module (only default export is available)
 ```
 
-Add `.mjs` to `extension` ***BEFORE*** the `.js` of your `webpack.config.svelte.js`:  
+Add `.mjs` to `extension` ***BEFORE*** the `.js` in your Webpack config:  
 https://github.com/sveltejs/svelte-loader/issues/82#issuecomment-485830738
+
+[./webpack.config.svelte.js](./webpack.config.svelte.js)
 
 ```js
 resolve: {
@@ -749,6 +760,8 @@ resolve: {
 ```
 
 Also, don't forget to add it to the `babel-loader` as well (optional):
+
+[./babel.config.js](./babel.config.js)
 
 ```js
 {
@@ -765,13 +778,15 @@ Also, don't forget to add it to the `babel-loader` as well (optional):
 <a id="troubles-react-404-subdirectory"></a>
 ### 5-8. React: 404 Not Found with React Router using Subdirectory
 
-`dist/router.js`:
+[./dist/router.js](./dist/router.js)
 
 ```js
 router.get(['/pizza', '/pizza/*'], (req, res) => res.render('pizza/index'));
 ```
 
-Also, make sure you have "basename" set for your React Router:
+Also, make sure you have "basename" set for your React Router.
+
+[./src/spa/react/index.jsx](./src/spa/react/index.jsx)
 
 ```js
 import React from 'react';
@@ -788,8 +803,9 @@ ReactDOM.render(
 );
 ```
 
-and `process.env.REACT_PUBLIC_URL` is set in `webpack.config.react.js`
-using `webpack.DefinePlugin`:
+and use `webpack.DefinePlugin` to set `process.env.REACT_PUBLIC_URL`.
+
+[./webpack.config.react.js](./webpack.config.react.js)
 
 ```js
 new webpack.DefinePlugin({
@@ -829,7 +845,9 @@ You could either go with a pure React application or normal server-client applic
 If you choose server-client,
 consider using services like `nodemon` or `supervisor` to watch the template changes.  
 Compared to `nodemon`, `supervisor` has fewer dependencies.
-Install `supervisor`, and do this (in your `package.json`):
+Install `supervisor`, and do this:
+
+[./package.json](./package.json)
 
 ```json
   "start": "supervisor -e html,js dist/server.js",
