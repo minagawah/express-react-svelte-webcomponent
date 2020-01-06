@@ -15,16 +15,16 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; [3-8. Express: Include Nunjucks Partials](#extra-nunjucks-partials)  
 &nbsp; [3-9. CORS Errors Fetching from "localhost"](#extra-cors-errors-for-localhost)  
 &nbsp; [3-10. Using Node Profiler](#extra-node-profiler)  
-[4. Installed NPM Packages](#installed-npm-packages)  
-[5. Troubles & Solutions](#troubles)  
-&nbsp; [5-1. Jest Does Not Understand "import()"](#troubles-jest-does-not-understand-import)  
-&nbsp; [5-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
-&nbsp; [5-3. Infinite Loop Using "webpack-hot-middleware"](#troubles-infinite-loop-using-webpack-hot-middleware)  
-&nbsp; [5-4. Uncaught ReferenceError: regeneratorRuntime is not defined](#troubles-uncaught-reference-error-regenerateruntime)  
-&nbsp; [5-5. No HMR Found For Subdirectory](#troubles-no-hmr-found-subdirectory)  
-&nbsp; [5-6. Svelte: new App fails](#troubles-svelte-new-app)  
-&nbsp; [5-7. Svelte: Can't reexport the named export "onMount"](#troubles-svelte-cant-reexport)  
-&nbsp; [5-8. React: 404 Not Found with React Router using Subdirectory](#troubles-react-404-subdirectory)  
+[4. Troubles & Solutions](#troubles)  
+&nbsp; [4-1. Jest Does Not Understand "import()"](#troubles-jest-does-not-understand-import)  
+&nbsp; [4-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
+&nbsp; [4-3. Infinite Loop Using "webpack-hot-middleware"](#troubles-infinite-loop-using-webpack-hot-middleware)  
+&nbsp; [4-4. Uncaught ReferenceError: regeneratorRuntime is not defined](#troubles-uncaught-reference-error-regenerateruntime)  
+&nbsp; [4-5. No HMR Found For Subdirectory](#troubles-no-hmr-found-subdirectory)  
+&nbsp; [4-6. Svelte: new App fails](#troubles-svelte-new-app)  
+&nbsp; [4-7. Svelte: Can't reexport the named export "onMount"](#troubles-svelte-cant-reexport)  
+&nbsp; [4-8. React: 404 Not Found with React Router using Subdirectory](#troubles-react-404-subdirectory)  
+[5. Installed NPM Packages](#installed-npm-packages)  
 [6. Notes](#notes)  
 &nbsp; [6-1. Irrelevant Issues](#notes-irrelevant)  
 &nbsp; &nbsp; [(a) Bundle Only NPM Modules Wanted](#notes-irrelevant-exclude-npm-modules)  
@@ -458,8 +458,248 @@ https://github.com/webpack/webpack/issues/4550#issuecomment-306750677
 
 
 
+<a id="troubles"></a>
+## 4. Troubles & Solutions
+
+Issues I encountered, and possible solutions for them.
+
+
+<a id="troubles-jest-does-not-understand-import"></a>
+### 4-1. Jest Does Not Understand `import()` (Webpack Dynamic Import)
+
+Webpack understands the syntax `import()` just fine, but Babel complains.
+For Babel, you need `plugin-syntax-dynamic-import`.  
+Once installed, then in your `babel.config.js`:
+
+[./babel.config.js](./babel.config.js)
+
+```js
+"plugins": [
+  "@babel/plugin-syntax-dynamic-import"
+]
+```
+
+Once a time, we used `babel-polyfill` for dynamic module imports.
+Yet, it required us to have 2 steps: actual files to import others,
+and sort of proxy files for them.  
+Now, it has become much easier for we only need "node" as one of the build target.  
+In your `babel.config.js`:
+
+```js
+"presets": [
+  [
+    "@babel/preset-env", {
+      "modules": false,
+      "targets": {
+        "node": "current"
+      }
+    }
+  ]
+]
+```
+
+
+<a id="troubles-unexpected-import"></a>
+### 4-2. Unexpected `import` (Jest)
+
+When `jest` does not understand `import` syntax,
+you need `@babel/plugin-transform-modules-commonjs`.
+
+[./babel.config.js](./babel.config.js)
+
+
+```
+"plugins": [
+  "@babel/plugin-transform-modules-commonjs"
+]
+```
+
+By the way, you could use `babel-jest`,
+but `babel-jest` is now integrated into Jest.  
+https://github.com/vuejs/vue-cli/issues/1584#issuecomment-519482294
+
+
+
+<a id="troubles-infinite-loop-using-webpack-hot-middleware"></a>
+### 4-3. Infinite Loop Using `webpack-hot-middleware`
+
+While the main cause of is still unknown (could be Node version),
+sometimes we experience a browser to endlessly reload itself
+when using `webpack-hot-middleware`.
+To stop this from happenning, try to set an actual URL
+for `publickPath` instead of a relative path:
+
+[./dist/server.js](./dist/server.js)
+
+```js
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: 'http://localhost:5000',
+}));
+```
+
+https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
+
+
+<a id="troubles-uncaught-reference-error-regenerateruntime"></a>
+### 4-4. Uncaught ReferenceError: regeneratorRuntime is not defined
+
+[./babel.config.js](./babel.config.js)
+
+```json
+"plugins": [
+  "@babel/plugin-transform-runtime"
+]
+```
+
+
+
+<a id="troubles-no-hmr-found-subdirectory"></a>
+### 4-5. No HMR Found For Subdirectory
+
+If you output chunks to a subdirectory, having `__webpack_hmr`
+for webpack-hot-middleware path does not resolve,
+and you must specify the subdirectory.
+For instance, we bunlde React codes to `dist/public/react`,
+so we explicitly tell Webpack where to look for the HMR loader.
+
+[./webpack.config.react.js](webpack.config.react.js)
+
+```js
+entry: {
+  pizza: [
+    'webpack-hot-middleware/client?path=http://localhost:5000/react/__webpack_hmr`,
+    'src/spa/react/index.jsx'
+  ]
+}
+```
+
+[./dist/server.js](./dist/server.js)
+
+```js
+webpackHotMiddleware(compiler, {
+  path: '/react/__webpack_hmr'
+})
+```
+
+
+<a id="troubles-svelte-new-app"></a>
+### 4-6. Svelte: new App fails
+
+Although you `new App`, it fails.
+
+```
+TypeError: Class constructor SvelteComponent cannot be invoked without 'new'
+```
+
+[./package.json](./package.json)
+
+```json
+"browserslist": [
+  "last 1 chrome versions"
+]
+```
+
+Or, in your [babel.config.js](./babel.config.js)
+
+```js
+"presets": [
+  [
+    "@babel/preset-env",
+    {
+      "targets": {
+        "browsers": ["last 1 chrome versions"]
+      }
+     }
+  ]
+]
+```
+
+
+<a id="troubles-svelte-cant-reexport"></a>
+### 4-7. Svelte: Can't reexport the named export `onMount`
+
+In your Svelte file, you try:
+
+```js
+import { onMount } from 'svelte';
+```
+
+and it gives you:
+
+```
+Can't reexport the named export 'onMount' from non EcmaScript module (only default export is available)
+```
+
+Add `.mjs` to `extension` ***BEFORE*** the `.js` in your Webpack config:  
+https://github.com/sveltejs/svelte-loader/issues/82#issuecomment-485830738
+
+[./webpack.config.svelte.js](./webpack.config.svelte.js)
+
+```js
+resolve: {
+  extensions: ['.mjs', '.js', '.svelte']
+}
+```
+
+Also, don't forget to add it to the `babel-loader` as well (optional):
+
+[./babel.config.js](./babel.config.js)
+
+```js
+{
+  test: /\.m?jsx?$/,
+  exclude: /node_modules/,
+  loader: 'babel-loader',
+  options: {
+    rootMode: 'upward'
+  }
+}
+```
+
+
+<a id="troubles-react-404-subdirectory"></a>
+### 4-8. React: 404 Not Found with React Router using Subdirectory
+
+[./dist/router.js](./dist/router.js)
+
+```js
+router.get(['/pizza', '/pizza/*'], (req, res) => res.render('pizza/index'));
+```
+
+Also, make sure you have "basename" set for your React Router.
+
+[./src/spa/react/index.jsx](./src/spa/react/index.jsx)
+
+```js
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { App } from './components';
+
+const basename = process.env.REACT_PUBLIC_URL;
+
+ReactDOM.render(
+  <Router basename={basename}>
+    <App />
+  </Router>,
+  document.getElementById('root')
+);
+```
+
+and use `webpack.DefinePlugin` to set `process.env.REACT_PUBLIC_URL`.
+
+[./webpack.config.react.js](./webpack.config.react.js)
+
+```js
+new webpack.DefinePlugin({
+  'process.env.REACT_PUBLIC_URL': JSON.stringify(path.resolve('/pizza')),
+})
+```
+
+
+
+
 <a id="installed-npm-packages"></a>
-## 4. Installed NPM Packages
+## 5. Installed NPM Packages
 
 Installed NPM packages follow:
 
@@ -574,246 +814,6 @@ yarn add --dev @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import
 ```shell
 yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next react react-dom react-router-dom react-use svelte moment ramda animejs
 ```
-
-
-
-<a id="troubles"></a>
-## 5. Troubles & Solutions
-
-Issues I encountered, and possible solutions for them.
-
-
-<a id="troubles-jest-does-not-understand-import"></a>
-### 5-1. Jest Does Not Understand `import()` (Webpack Dynamic Import)
-
-Webpack understands the syntax `import()` just fine, but Babel complains.
-For Babel, you need `plugin-syntax-dynamic-import`.  
-Once installed, then in your `babel.config.js`:
-
-[./babel.config.js](./babel.config.js)
-
-```js
-"plugins": [
-  "@babel/plugin-syntax-dynamic-import"
-]
-```
-
-Once a time, we used `babel-polyfill` for dynamic module imports.
-Yet, it required us to have 2 steps: actual files to import others,
-and sort of proxy files for them.  
-Now, it has become much easier for we only need "node" as one of the build target.  
-In your `babel.config.js`:
-
-```js
-"presets": [
-  [
-    "@babel/preset-env", {
-      "modules": false,
-      "targets": {
-        "node": "current"
-      }
-    }
-  ]
-]
-```
-
-
-<a id="troubles-unexpected-import"></a>
-### 5-2. Unexpected `import` (Jest)
-
-When `jest` does not understand `import` syntax,
-you need `@babel/plugin-transform-modules-commonjs`.
-
-[./babel.config.js](./babel.config.js)
-
-
-```
-"plugins": [
-  "@babel/plugin-transform-modules-commonjs"
-]
-```
-
-By the way, you could use `babel-jest`,
-but `babel-jest` is now integrated into Jest.  
-https://github.com/vuejs/vue-cli/issues/1584#issuecomment-519482294
-
-
-
-<a id="troubles-infinite-loop-using-webpack-hot-middleware"></a>
-### 5-3. Infinite Loop Using `webpack-hot-middleware`
-
-While the main cause of is still unknown (could be Node version),
-sometimes we experience a browser to endlessly reload itself
-when using `webpack-hot-middleware`.
-To stop this from happenning, try to set an actual URL
-for `publickPath` instead of a relative path:
-
-[./dist/server.js](./dist/server.js)
-
-```js
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: 'http://localhost:5000',
-}));
-```
-
-https://github.com/webpack-contrib/webpack-hot-middleware/issues/135#issuecomment-348724624
-
-
-<a id="troubles-uncaught-reference-error-regenerateruntime"></a>
-### 5-4. Uncaught ReferenceError: regeneratorRuntime is not defined
-
-[./babel.config.js](./babel.config.js)
-
-```json
-"plugins": [
-  "@babel/plugin-transform-runtime"
-]
-```
-
-
-
-<a id="troubles-no-hmr-found-subdirectory"></a>
-### 5-5. No HMR Found For Subdirectory
-
-If you output chunks to a subdirectory, having `__webpack_hmr`
-for webpack-hot-middleware path does not resolve,
-and you must specify the subdirectory.
-For instance, we bunlde React codes to `dist/public/react`,
-so we explicitly tell Webpack where to look for the HMR loader.
-
-[./webpack.config.react.js](webpack.config.react.js)
-
-```js
-entry: {
-  pizza: [
-    'webpack-hot-middleware/client?path=http://localhost:5000/react/__webpack_hmr`,
-    'src/spa/react/index.jsx'
-  ]
-}
-```
-
-[./dist/server.js](./dist/server.js)
-
-```js
-webpackHotMiddleware(compiler, {
-  path: '/react/__webpack_hmr'
-})
-```
-
-
-<a id="troubles-svelte-new-app"></a>
-### 5-6. Svelte: new App fails
-
-Although you `new App`, it fails.
-
-```
-TypeError: Class constructor SvelteComponent cannot be invoked without 'new'
-```
-
-[./package.json](./package.json)
-
-```json
-"browserslist": [
-  "last 1 chrome versions"
-]
-```
-
-Or, in your [babel.config.js](./babel.config.js)
-
-```js
-"presets": [
-  [
-    "@babel/preset-env",
-    {
-      "targets": {
-        "browsers": ["last 1 chrome versions"]
-      }
-     }
-  ]
-]
-```
-
-
-<a id="troubles-svelte-cant-reexport"></a>
-### 5-7. Svelte: Can't reexport the named export `onMount`
-
-In your Svelte file, you try:
-
-```js
-import { onMount } from 'svelte';
-```
-
-and it gives you:
-
-```
-Can't reexport the named export 'onMount' from non EcmaScript module (only default export is available)
-```
-
-Add `.mjs` to `extension` ***BEFORE*** the `.js` in your Webpack config:  
-https://github.com/sveltejs/svelte-loader/issues/82#issuecomment-485830738
-
-[./webpack.config.svelte.js](./webpack.config.svelte.js)
-
-```js
-resolve: {
-  extensions: ['.mjs', '.js', '.svelte']
-}
-```
-
-Also, don't forget to add it to the `babel-loader` as well (optional):
-
-[./babel.config.js](./babel.config.js)
-
-```js
-{
-  test: /\.m?jsx?$/,
-  exclude: /node_modules/,
-  loader: 'babel-loader',
-  options: {
-    rootMode: 'upward'
-  }
-}
-```
-
-
-<a id="troubles-react-404-subdirectory"></a>
-### 5-8. React: 404 Not Found with React Router using Subdirectory
-
-[./dist/router.js](./dist/router.js)
-
-```js
-router.get(['/pizza', '/pizza/*'], (req, res) => res.render('pizza/index'));
-```
-
-Also, make sure you have "basename" set for your React Router.
-
-[./src/spa/react/index.jsx](./src/spa/react/index.jsx)
-
-```js
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { App } from './components';
-
-const basename = process.env.REACT_PUBLIC_URL;
-
-ReactDOM.render(
-  <Router basename={basename}>
-    <App />
-  </Router>,
-  document.getElementById('root')
-);
-```
-
-and use `webpack.DefinePlugin` to set `process.env.REACT_PUBLIC_URL`.
-
-[./webpack.config.react.js](./webpack.config.react.js)
-
-```js
-new webpack.DefinePlugin({
-  'process.env.REACT_PUBLIC_URL': JSON.stringify(path.resolve('/pizza')),
-})
-```
-
 
 
 
