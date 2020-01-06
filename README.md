@@ -533,6 +533,7 @@ you want to compose them.
 [src/spa/react/index.jsx](./src/spa/react/index.jsx):  
 
 ```js
+import { composeContextProviders } from './lib/';
 import { ProvideScreenSize } from './contexts/';
 
 ReactDOM.render(
