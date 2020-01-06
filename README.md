@@ -201,13 +201,14 @@ and those packages are excluded from the bundled chunks.
 })();
 ```
 
-You need to specify "optimization.splitChunks.chunks"
-in your Webpack configuration.  
-`initial` - Statical imports only.  
-`async` - Dynamic imports only.  
-`all` - Enable both of the above.
+You need to specify `optimization.splitChunks.chunks`
+in your Webpack configuration.
 
-[webpack.config.normal.js](./webpack.config.normal.js):
+- `initial` - Static imports only
+- `async` - Dynamic imports only
+- `all` - Enable both of the above
+
+[./webpack.config.normal.js](./webpack.config.normal.js):
 
 ```js
 optimization: {
@@ -218,9 +219,9 @@ optimization: {
 ```
 
 You also need to know `import()` syntax is valid only to Webpack4,
-and Babel does not understand the syntax.
+and Babel does not understand the syntax.  
 See
-[5-1. Jest Does Not Understand "import()"](#troubles-jest-does-not-understand-import)
+["5-1. Jest Does Not Understand "import()""](#troubles-jest-does-not-understand-import)
 for how you need `@babel/plugin-syntax-dynamic-import`
 to teach Babel of the syntax.
 
