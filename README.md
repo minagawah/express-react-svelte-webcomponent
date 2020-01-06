@@ -248,6 +248,19 @@ anime({
 })
 ```
 
+Or, you could simply do this:
+
+[./src/spa/react/components/Cloud.jsx](./src/spa/react/components/Cloud.jsx)
+
+```js
+import anime from 'animejs/lib/anime.min.js';
+
+anime({
+  targets: svg,
+  ...
+});
+```
+
 
 <a id="extra-tailwind-emotion"></a>
 ### 3-3. React: Tailwind + Emotion

@@ -1,4 +1,13 @@
-import React, { Component } from 'react';
+/*
+ * Demonstrating the use of "scrollmonitor-react".
+ * <svg ref={this.svgRef}> is a cloud shaped SVG image.
+ * As a user scrolls the browser, watchers provided to
+ * Content1, Content2, and Content3 would detect
+ * whether the user has enter each region. When it
+ * enters the region, animate the cloud accordingly.
+ */
+
+import React, { Fragment, Component } from 'react';
 import anime from 'animejs/lib/anime.min.js';
 import { css } from '@emotion/core';
 import tw from 'tailwind.macro';
@@ -8,55 +17,55 @@ import { cloud } from '../cloud';
 
 const extractPos = (id = '') => Number(id.replace('content', '')) - 1;
 
-const contentFactory = (id, Content) => {
-  class Wrap extends Component {
-    render () {
-      // const { enterViewport = false, exitViewport = false } = this.props || {};
-      return (
-        <div id={id} css={css`
+// A shared wrapper component for Content1, Content2, and Content3.
+const ContentWrapper = ({ id, children }) => {
+  // const { enterViewport = false, exitViewport = false } = props || {};
+  return (
+    <div id={id} css={css`
 position: relative;
 width: 100%;
 height: 600px;
 pointer-events: none;
 border: 1px solid #eaeaea;
 ${tw`flex flex-col flex-no-wrap justify-center items-center`}
-        `}>
-          <Content props={this.props} />
-        </div>
-      );
-    }
-  }
-  return Wrap;
+    `}>
+      {children}
+    </div>
+  );
 };
 
 const sharedCSS = 'position:relative;font-size:3em;';
 
+/*
+ * Content1, Content2, and Content3 will later receive "stateChange" prop
+ * to which "receiveStateChange()" is be bound.
+ * "scrollmonitor-react" provides them the watchers.
+ */
 const [Content1, Content2, Content3] =
   [[1, '#ff7871'], [2, '#ff87c9'], [3, '#c9a6ff']].reduce((acc, attr) => {
-    return acc.concat(Watch(contentFactory(
-      `content${attr[0]}`,
-      () => (
+    // "Watcher" is a special context provider of "scrollmonitor-react".
+    return acc.concat(Watch(() => (
+      <ContentWrapper id={`content${attr[0]}`}>
         <div css={css`${sharedCSS}color:${attr[1]};`}>
           Content {attr[0]}
         </div>
-      )
+      </ContentWrapper>
     )));
   }, []);
 
 export class Cloud extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.step = 0;
     this.svgRef = React.createRef();
     this.shapeRef = React.createRef();
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.init();
   }
 
-  init () {
+  init() {
     const attr = cloud[0];
     const svg = this.svgRef.current;
     anime.remove(svg);
@@ -73,7 +82,7 @@ export class Cloud extends Component {
     this.initLoop();
   }
 
-  initLoop (pos = 0) {
+  initLoop(pos = 0) {
     const attr = cloud[pos];
     const shape = this.shapeRef.current;
 
@@ -95,7 +104,14 @@ export class Cloud extends Component {
     });
   }
 
-  receiveStateChange (watcher = {}) {
+  /*
+   * For Content1, Content2, and Content3
+   * will each be assigned with a prop "stateChange".
+   * This is a method bound to "stateChange".
+   * Since each is wrapped with "Watch" context provider,
+   * we receive "watcher" prop.
+   */
+  receiveStateChange(watcher = {}) {
     const {
       watchItem = {},
       isInViewport = false,
@@ -191,9 +207,9 @@ export class Cloud extends Component {
     // END OF: exitViewport
   }
 
-  render () {
+  render() {
     return (
-      <div>
+      <Fragment>
         <h1>Cloud</h1>
         <div css={css`
 position: fixed;
@@ -218,7 +234,7 @@ opacity: 0.45;
         <Content1 stateChange={this.receiveStateChange.bind(this)} />
         <Content2 stateChange={this.receiveStateChange.bind(this)} />
         <Content3 stateChange={this.receiveStateChange.bind(this)} />
-      </div>
+      </Fragment>
     );
   }
 }
