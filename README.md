@@ -11,12 +11,12 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; &nbsp; [(1) Dynamic (async) Import](#notes-extra-dynamic-import)  
 &nbsp; &nbsp; [(2) Use of "animejs" in ES modules](#notes-extra-animejs)  
 &nbsp; &nbsp; [(3) React: Tailwind + Emotion](#notes-extra-tailwind-emotion)  
-&nbsp; &nbsp; [(4) Express: Include Nunjucks Partials](#notes-extra-nunjucks-partials)  
-&nbsp; &nbsp; [(5) Web Components: Load External CSS for Shadow DOMs](#notes-extra-external-css-fro-shadow-doms)  
-&nbsp; &nbsp; [(6) Web Components: No "class" Syntax](#notes-extra-web-components-without-class)  
-&nbsp; &nbsp; [(7) Web Components: Apply styles to "slot"](#notes-extra-apply-styles-to-slot)  
-&nbsp; &nbsp; [(8) CORS Errors Fetching from "localhost"](#notes-extra-cors-errors-for-localhost)  
-&nbsp; &nbsp; [(9) React: Compose Multiple Context Providers](#notes-extra-compose-multiple-context-providers)  
+&nbsp; &nbsp; [(4) React: Compose Multiple Context Providers](#notes-extra-compose-multiple-context-providers)  
+&nbsp; &nbsp; [(5) Express: Include Nunjucks Partials](#notes-extra-nunjucks-partials)  
+&nbsp; &nbsp; [(6) Web Components: Load External CSS for Shadow DOMs](#notes-extra-external-css-fro-shadow-doms)  
+&nbsp; &nbsp; [(7) Web Components: No "class" Syntax](#notes-extra-web-components-without-class)  
+&nbsp; &nbsp; [(8) Web Components: Apply styles to "slot"](#notes-extra-apply-styles-to-slot)  
+&nbsp; &nbsp; [(9) CORS Errors Fetching from "localhost"](#notes-extra-cors-errors-for-localhost)  
 &nbsp; &nbsp; [(10) Using Node Profiler](#notes-extra-node-profiler)  
 [5. Troubles & Solutions](#troubles)  
 &nbsp; [5-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
@@ -394,8 +394,48 @@ the basic idea is to choose "Babel macro" solution over "PostCSS" solution.
 
 
 
+<a id="notes-extra-compose-multiple-context-providers"></a>
+#### (4) React: Compose Multiple Context Providers
+
+You have several React context providers.
+Instead of digging the JSX nests too deep,
+you want to compose them.
+
+[src/spa/react/index.jsx](./src/spa/react/index.jsx):  
+
+```js
+import { composeContextProviders } from './lib/';
+import { ProvideScreenSize } from './contexts/';
+
+ReactDOM.render(
+  <Router basename={basename}>
+    {composeContextProviders(
+      [
+        [ProvideScreenSize, {}]
+      ],
+      (<App />)
+    )}
+  </Router>,
+  document.querySelector('main')
+);
+```
+
+[src/spa/react/lib/utils.js](./src/spa/react/lib/utils.js):  
+
+```js
+export const composeContextProviders = (contexts, component) => {
+  return contexts.reduce((acc, [Provider, value]) => {
+    return (
+      <Provider value={value}>{acc}</Provider>
+    );
+  }, component);
+}
+```
+
+
+
 <a id="notes-extra-nunjucks-partials"></a>
-#### (4) Express: Include Nunjucks Partials
+#### (5) Express: Include Nunjucks Partials
 
 Many Express view templates allow you
 to include partial templates, and so does Nunjucks.
@@ -409,7 +449,7 @@ ${require('./partials/footer/template.njk')}
 
 
 <a id="notes-extra-external-css-fro-shadow-doms"></a>
-#### (5) Web Components: Load External CSS for Shadow DOMs
+#### (6) Web Components: Load External CSS for Shadow DOMs
 
 `to-string-loader` is a handy loader for external CSS files
 to your Web Components to apply styles to Shadow DOMs.
@@ -460,7 +500,7 @@ class BurgerHeader extends HTMLElement {
 
 
 <a id="notes-extra-web-components-without-class"></a>
-#### (6) Web Components: No `class` Syntax
+#### (7) Web Components: No `class` Syntax
 
 Some of you may prefer not using ES6 `class` syntax,
 but want to go the old fashion way (using `prototype`).
@@ -512,7 +552,7 @@ div#message-wrapper slot[name=message] {
 
 
 <a id="notes-extra-cors-errors-for-localhost"></a>
-#### (8) CORS Errors Fetching from `localhost`
+#### (9) CORS Errors Fetching from `localhost`
 
 You run your app locally, and Chrome raises a CORS error
 when you attempt to `fetch` external resources.  
@@ -521,45 +561,6 @@ What you probablly want is: https://cors-anywhere.herokuapp.com/
 [src/spa/svelte/App.svelte](./src/spa/svelte/App.svelte)  
 [src/lib/cors.js](./src/lib/cors.js)  
 
-
-
-<a id="notes-extra-compose-multiple-context-providers"></a>
-#### (9) React: Compose Multiple Context Providers
-
-You have several React context providers.
-Instead of digging the JSX nests too deep,
-you want to compose them.
-
-[src/spa/react/index.jsx](./src/spa/react/index.jsx):  
-
-```js
-import { composeContextProviders } from './lib/';
-import { ProvideScreenSize } from './contexts/';
-
-ReactDOM.render(
-  <Router basename={basename}>
-    {composeContextProviders(
-      [
-        [ProvideScreenSize, {}]
-      ],
-      (<App />)
-    )}
-  </Router>,
-  document.querySelector('main')
-);
-```
-
-[src/spa/react/lib/utils.js](./src/spa/react/lib/utils.js):  
-
-```js
-export const composeContextProviders = (contexts, component) => {
-  return contexts.reduce((acc, [Provider, value]) => {
-    return (
-      <Provider value={value}>{acc}</Provider>
-    );
-  }, component);
-}
-```
 
 
 <a id="notes-extra-node-profiler"></a>
