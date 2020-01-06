@@ -3,6 +3,7 @@ import { App } from './App';
 import { Header } from './Header';
 import { Top } from './Top';
 import { Toppings } from './Toppings';
+import { Cloud } from './Cloud';
 
 export {
   NotFound,
@@ -10,4 +11,5 @@ export {
   Header,
   Top,
   Toppings,
+  Cloud,
 }

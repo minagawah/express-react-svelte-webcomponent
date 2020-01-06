@@ -810,9 +810,10 @@ yarn add --dev @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import
 - moment
 - ramda
 - animejs
+- scrollmonitor-react
 
 ```shell
-yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next react react-dom react-router-dom react-use svelte moment ramda animejs
+yarn add express nunjucks @emotion/core @emotion/styled tailwind.macro@next react react-dom react-router-dom react-use svelte moment ramda animejs scrollmonitor-react
 ```
 
 

@@ -49,6 +49,7 @@ pointer-events: none;
         <NormalLink to="../">Top</NormalLink>
         <NavLink to="/top" css={linkMarginLeft}>Pizza</NavLink>
         <NavLink to="/toppings" css={linkMarginLeft}>Toppings</NavLink>
+        <NavLink to="/cloud" css={linkMarginLeft}>Cloud</NavLink>
       </div>
     </header>
   );

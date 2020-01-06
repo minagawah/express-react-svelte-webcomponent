@@ -7,7 +7,7 @@ import { css } from '@emotion/core';
 // import tw from 'tailwind.macro';
 
 import { useScreenSize } from '../contexts/';
-import { NotFound, Header, Top, Toppings } from './';
+import { NotFound, Header, Top, Toppings, Cloud } from './';
 
 /*
  * TODO:
@@ -40,6 +40,7 @@ export const App = () => {
           <Route exact path="/" component={Top} />
           <Route path="/top" component={Top} />
           <Route path="/toppings" component={Toppings} />
+          <Route path="/cloud" component={Cloud} />
           <Route component={NotFound} />
         </Switch>
       </div>
