@@ -349,6 +349,10 @@ export const App = () => {
   useEffect(() => {
     debouncedResize();
   }, [debouncedResize]);
+
+  return (
+    <div>...</div>
+  );
 }
 ```
 
