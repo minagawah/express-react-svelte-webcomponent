@@ -3,18 +3,18 @@
 Webpack multi-compiler example to bundle builds for React, Svelte, Web Components, and normal Express view templates.
 
 [1. About](#about)  
-[2. Extra Features Implemented](#extra)  
-&nbsp; [2-1. Dynamic (async) Import](#extra-dynamic-import)  
-&nbsp; [2-2. Use of "animejs" in ES modules](#extra-animejs)  
-&nbsp; [2-3. React: Tailwind + Emotion](#extra-tailwind-emotion)  
-&nbsp; [2-4. React: Compose Multiple Context Providers](#extra-compose-multiple-context-providers)  
-&nbsp; [2-5. Web Components: Load External CSS for Shadow DOMs](#extra-external-css-fro-shadow-doms)  
-&nbsp; [2-6. Web Components: No "class" Syntax](#extra-web-components-without-class)  
-&nbsp; [2-7. Web Components: Apply styles to "slot"](#extra-apply-styles-to-slot)  
-&nbsp; [2-8. Express: Include Nunjucks Partials](#extra-nunjucks-partials)  
-&nbsp; [2-9. CORS Errors Fetching from "localhost"](#extra-cors-errors-for-localhost)  
-&nbsp; [2-10. Using Node Profiler](#extra-node-profiler)  
-[3. Instructions](#instructions)  
+[2. Instructions](#instructions)  
+[3. Extra Features Implemented](#extra)  
+&nbsp; [3-1. Dynamic (async) Import](#extra-dynamic-import)  
+&nbsp; [3-2. Use of "animejs" in ES modules](#extra-animejs)  
+&nbsp; [3-3. React: Tailwind + Emotion](#extra-tailwind-emotion)  
+&nbsp; [3-4. React: Compose Multiple Context Providers](#extra-compose-multiple-context-providers)  
+&nbsp; [3-5. Web Components: Load External CSS for Shadow DOMs](#extra-external-css-fro-shadow-doms)  
+&nbsp; [3-6. Web Components: No "class" Syntax](#extra-web-components-without-class)  
+&nbsp; [3-7. Web Components: Apply styles to "slot"](#extra-apply-styles-to-slot)  
+&nbsp; [3-8. Express: Include Nunjucks Partials](#extra-nunjucks-partials)  
+&nbsp; [3-9. CORS Errors Fetching from "localhost"](#extra-cors-errors-for-localhost)  
+&nbsp; [3-10. Using Node Profiler](#extra-node-profiler)  
 [4. Installed NPM Packages](#installed-npm-packages)  
 [5. Troubles & Solutions](#troubles)  
 &nbsp; [5-1. Webpack4 Dynamic Import](#troubles-webpack4-dynamic-import)  
@@ -132,15 +132,62 @@ and you must re-build, and reload the browser.
 I haven't done it yet)
 
 
+<a id="instructions"></a>
+## 2. Instructions
+
+### BUILD (development)
+
+```shell
+yarn build:dev
+```
+
+Regardless of the app kinds, `*.njk` (Nunjucks) templates are built to `dist/views`.
+The rest of the chunks are bundled to `dist/public`.
+All the chunks are bundled right bellow the directory,
+but Web Component codes are bundled to `dist/public/components` directory,
+React codes to `dist/public/pizza`,
+Svelte codes to `dist/public/nacho`.
+
+Given `NODE_ENV=development`, codes are bundled for `development`.  
+For all ES6 codes are transpiled in accord with the definitions in `babel.config.js`.
+
+
+### RUN (local)
+
+```shell
+yarn start
+```
+
+Starts Express app by runing `dist/server.js`.
+Uses `webpack-dev-middleware` and `webpack-hot-middleware`.
+
+You must run `yarn build:dev` beforehand, otherwise Express
+is not able to read `*.njk` (Nunjucks) templates.
+The same goes for Web Components.
+Whenever you make changes to Web Components,
+repeat the build.
+
+
+### BUILD (production)
+
+Ideas are the same as the ones for `development`, but for `production`:
+
+```shell
+yarn build
+```
+
+
+
+
 <a id="extra"></a>
-## 2. Extra Features Implemented
+## 3. Extra Features Implemented
 
 Some features implemented in this project
 may help someone who has troubles implementing them.
 
 
 <a id="extra-dynamic-import"></a>
-### 2-1. Dynamic (async) Import
+### 3-1. Dynamic (async) Import
 
 Sometimes you want certain NPM packages being loaded at runtime,
 and Webpack4 offers `import()` syntax to achieve this,
@@ -179,7 +226,7 @@ to teach Babel of the syntax.
 
 
 <a id="extra-animejs"></a>
-### 2-2. Use of `animejs` in ES modules
+### 3-2. Use of `animejs` in ES modules
 
 `animejs` provides a build specific for ES codes:
 
@@ -201,7 +248,7 @@ anime({
 
 
 <a id="extra-tailwind-emotion"></a>
-### 2-3. React: Tailwind + Emotion
+### 3-3. React: Tailwind + Emotion
 
 You want Tailwind + Emotion in your React apps.
 
@@ -222,7 +269,7 @@ the basic idea is to choose "Babel macro" solution over "PostCSS" solution.
 
 
 <a id="extra-compose-multiple-context-providers"></a>
-### 2-4. React: Compose Multiple Context Providers
+### 3-4. React: Compose Multiple Context Providers
 
 You have several React context providers.  
 Instead of digging the JSX nests too deep,
@@ -262,7 +309,7 @@ export const composeContextProviders = (contexts, component) => {
 
 
 <a id="extra-external-css-fro-shadow-doms"></a>
-### 2-5. Web Components: Load External CSS for Shadow DOMs
+### 3-5. Web Components: Load External CSS for Shadow DOMs
 
 `to-string-loader` is a handy loader for external CSS files
 to your Web Components to apply styles to Shadow DOMs.
@@ -313,7 +360,7 @@ class BurgerHeader extends HTMLElement {
 
 
 <a id="extra-web-components-without-class"></a>
-### 2-6. Web Components: No `class` Syntax
+### 3-6. Web Components: No `class` Syntax
 
 Some of you may prefer not using ES6 `class` syntax,
 but want to go the old fashion way (using `prototype`).
@@ -323,7 +370,7 @@ but want to go the old fashion way (using `prototype`).
 
 
 <a id="extra-apply-styles-to-slot"></a>
-### 2-7. Web Components: Apply styles to `slot`
+### 3-7. Web Components: Apply styles to `slot`
 
 Applying styles to CSS classes within the custom elements are easy.  
 However, you want styles for `slot` given from the parent.
@@ -365,7 +412,7 @@ div#message-wrapper slot[name=message] {
 
 
 <a id="extra-nunjucks-partials"></a>
-### 2-8. Express: Include Nunjucks Partials
+### 3-8. Express: Include Nunjucks Partials
 
 Many Express view templates allow you
 to include partial templates, and so does Nunjucks.
@@ -379,7 +426,7 @@ ${require('./partials/footer/template.njk')}
 
 
 <a id="extra-cors-errors-for-localhost"></a>
-### 2-9. CORS Errors Fetching from `localhost`
+### 3-9. CORS Errors Fetching from `localhost`
 
 You run your app locally, and Chrome raises a CORS error
 when you attempt to `fetch` external resources.  
@@ -391,7 +438,7 @@ What you probablly want is: https://cors-anywhere.herokuapp.com/
 
 
 <a id="extra-node-profiler"></a>
-### 2-10. Using Node Profiler
+### 3-10. Using Node Profiler
 
 If you have never used it before, it is time.  
 
@@ -407,53 +454,6 @@ You can see what's going on with your webpack build process.
 
 For More:  
 https://github.com/webpack/webpack/issues/4550#issuecomment-306750677  
-
-
-
-<a id="instructions"></a>
-## 3. Instructions
-
-### BUILD (development)
-
-```shell
-yarn build:dev
-```
-
-Regardless of the app kinds, `*.njk` (Nunjucks) templates are built to `dist/views`.
-The rest of the chunks are bundled to `dist/public`.
-All the chunks are bundled right bellow the directory,
-but Web Component codes are bundled to `dist/public/components` directory,
-React codes to `dist/public/pizza`,
-Svelte codes to `dist/public/nacho`.
-
-Given `NODE_ENV=development`, codes are bundled for `development`.  
-For all ES6 codes are transpiled in accord with the definitions in `babel.config.js`.
-
-
-### RUN (local)
-
-```shell
-yarn start
-```
-
-Starts Express app by runing `dist/server.js`.
-Uses `webpack-dev-middleware` and `webpack-hot-middleware`.
-
-You must run `yarn build:dev` beforehand, otherwise Express
-is not able to read `*.njk` (Nunjucks) templates.
-The same goes for Web Components.
-Whenever you make changes to Web Components,
-repeat the build.
-
-
-### BUILD (production)
-
-Ideas are the same as the ones for `development`, but for `production`:
-
-```shell
-yarn build
-```
-
 
 
 
