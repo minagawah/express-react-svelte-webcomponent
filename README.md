@@ -397,7 +397,7 @@ the basic idea is to choose "Babel macro" solution over "PostCSS" solution.
 <a id="notes-extra-compose-multiple-context-providers"></a>
 #### (4) React: Compose Multiple Context Providers
 
-You have several React context providers.
+You have several React context providers.  
 Instead of digging the JSX nests too deep,
 you want to compose them.
 
