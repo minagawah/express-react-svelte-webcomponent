@@ -336,19 +336,20 @@ import { useScreenSize } from '../contexts/';
 export const App = () => {
   const { screenSize } = useScreenSize();
 
-const resize = useCallback(() => {
-  console.log(`[React.App] ${screenSize.width}x${screenSize.height}`);
-}, [screenSize]);
+  const resize = useCallback(() => {
+    console.log(`[React.App] ${screenSize.width}x${screenSize.height}`);
+  }, [screenSize]);
 
-const [, debouncedResize] = useDebounce(
-  resize,
-  500,
-  [screenSize]
-);
+  const [, debouncedResize] = useDebounce(
+    resize,
+    500,
+    [screenSize]
+  );
 
-useEffect(() => {
-  debouncedResize();
-}, [debouncedResize]);
+  useEffect(() => {
+    debouncedResize();
+  }, [debouncedResize]);
+}
 ```
 
 
