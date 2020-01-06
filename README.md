@@ -12,10 +12,10 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; &nbsp; [(2) Use of "animejs" in ES modules](#notes-extra-animejs)  
 &nbsp; &nbsp; [(3) React: Tailwind + Emotion](#notes-extra-tailwind-emotion)  
 &nbsp; &nbsp; [(4) React: Compose Multiple Context Providers](#notes-extra-compose-multiple-context-providers)  
-&nbsp; &nbsp; [(5) Express: Include Nunjucks Partials](#notes-extra-nunjucks-partials)  
-&nbsp; &nbsp; [(6) Web Components: Load External CSS for Shadow DOMs](#notes-extra-external-css-fro-shadow-doms)  
-&nbsp; &nbsp; [(7) Web Components: No "class" Syntax](#notes-extra-web-components-without-class)  
-&nbsp; &nbsp; [(8) Web Components: Apply styles to "slot"](#notes-extra-apply-styles-to-slot)  
+&nbsp; &nbsp; [(5) Web Components: Load External CSS for Shadow DOMs](#notes-extra-external-css-fro-shadow-doms)  
+&nbsp; &nbsp; [(6) Web Components: No "class" Syntax](#notes-extra-web-components-without-class)  
+&nbsp; &nbsp; [(7) Web Components: Apply styles to "slot"](#notes-extra-apply-styles-to-slot)  
+&nbsp; &nbsp; [(8) Express: Include Nunjucks Partials](#notes-extra-nunjucks-partials)  
 &nbsp; &nbsp; [(9) CORS Errors Fetching from "localhost"](#notes-extra-cors-errors-for-localhost)  
 &nbsp; &nbsp; [(10) Using Node Profiler](#notes-extra-node-profiler)  
 [5. Troubles & Solutions](#troubles)  
@@ -434,22 +434,8 @@ export const composeContextProviders = (contexts, component) => {
 
 
 
-<a id="notes-extra-nunjucks-partials"></a>
-#### (5) Express: Include Nunjucks Partials
-
-Many Express view templates allow you
-to include partial templates, and so does Nunjucks.
-
-[src/index.njk](./src/index.njk):
-
-```html
-${require('./partials/footer/template.njk')}
-```
-
-
-
 <a id="notes-extra-external-css-fro-shadow-doms"></a>
-#### (6) Web Components: Load External CSS for Shadow DOMs
+#### (5) Web Components: Load External CSS for Shadow DOMs
 
 `to-string-loader` is a handy loader for external CSS files
 to your Web Components to apply styles to Shadow DOMs.
@@ -500,7 +486,7 @@ class BurgerHeader extends HTMLElement {
 
 
 <a id="notes-extra-web-components-without-class"></a>
-#### (7) Web Components: No `class` Syntax
+#### (6) Web Components: No `class` Syntax
 
 Some of you may prefer not using ES6 `class` syntax,
 but want to go the old fashion way (using `prototype`).
@@ -547,6 +533,20 @@ and here is the selector syntax you want.
 div#message-wrapper slot[name=message] {
     @apply text-gray-800 mb-1;
 }
+```
+
+
+
+<a id="notes-extra-nunjucks-partials"></a>
+#### (8) Express: Include Nunjucks Partials
+
+Many Express view templates allow you
+to include partial templates, and so does Nunjucks.
+
+[src/index.njk](./src/index.njk):
+
+```html
+${require('./partials/footer/template.njk')}
 ```
 
 
