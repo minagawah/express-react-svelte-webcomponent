@@ -9,13 +9,14 @@ Webpack multi-compiler example to bundle builds for React, Svelte, Web Component
 &nbsp; [3-2. Use of "animejs" in ES modules](#extra-animejs)  
 &nbsp; [3-3. React: Tailwind + Emotion](#extra-tailwind-emotion)  
 &nbsp; [3-4. React: Compose Multiple Context Providers](#extra-compose-multiple-context-providers)  
-&nbsp; [3-5. React: Using "scrollmonitor-react"](#extra-scrollmonitor)  
-&nbsp; [3-6. Web Components: Load External CSS for Shadow DOMs](#extra-external-css-fro-shadow-doms)  
-&nbsp; [3-7. Web Components: No "class" Syntax](#extra-web-components-without-class)  
-&nbsp; [3-8. Web Components: Apply styles to "slot"](#extra-apply-styles-to-slot)  
-&nbsp; [3-9. Express: Include Nunjucks Partials](#extra-nunjucks-partials)  
-&nbsp; [3-10. CORS Errors Fetching from "localhost"](#extra-cors-errors-for-localhost)  
-&nbsp; [3-11. Using Node Profiler](#extra-node-profiler)  
+&nbsp; [3-5. React: Using "useDebounce" of "react-use"](#extra-use-debounce)  
+&nbsp; [3-6. React: Using "scrollmonitor-react"](#extra-scrollmonitor)  
+&nbsp; [3-7. Web Components: Load External CSS for Shadow DOMs](#extra-external-css-fro-shadow-doms)  
+&nbsp; [3-8. Web Components: No "class" Syntax](#extra-web-components-without-class)  
+&nbsp; [3-9. Web Components: Apply styles to "slot"](#extra-apply-styles-to-slot)  
+&nbsp; [3-10. Express: Include Nunjucks Partials](#extra-nunjucks-partials)  
+&nbsp; [3-11. CORS Errors Fetching from "localhost"](#extra-cors-errors-for-localhost)  
+&nbsp; [3-12. Using Node Profiler](#extra-node-profiler)  
 [4. Troubles & Solutions](#troubles)  
 &nbsp; [4-1. Jest Does Not Understand "import()"](#troubles-jest-does-not-understand-import)  
 &nbsp; [4-2. Unexpected "import" (Jest)](#troubles-unexpected-import)  
@@ -323,10 +324,39 @@ export const composeContextProviders = (contexts, component) => {
 ```
 
 
-<a id="extra-scrollmonitor"></a>
-### 3-5. React: Using `scrollmonitor-react`
+<a id="extra-use-debounce"></a>
+### 3-5. React: Using `useDebounce` of `react-use`
 
-A sample code to show the use of `scrollmonitor-react`:
+[./src/spa/react/components/App.jsx](./src/spa/react/components/App.jsx)
+
+```js
+import { useDebounce } from 'react-use';
+import { useScreenSize } from '../contexts/';
+
+export const App = () => {
+  const { screenSize } = useScreenSize();
+
+const resize = useCallback(() => {
+  console.log(`[React.App] ${screenSize.width}x${screenSize.height}`);
+}, [screenSize]);
+
+const [, debouncedResize] = useDebounce(
+  resize,
+  500,
+  [screenSize]
+);
+
+useEffect(() => {
+  debouncedResize();
+}, [debouncedResize]);
+```
+
+
+
+<a id="extra-scrollmonitor"></a>
+### 3-6. React: Using `scrollmonitor-react`
+
+A sample code to show the use of ["scrollmonitor-react"](https://github.com/stutrek/scrollmonitor-react).
 
 [./src/spa/react/components/Cloud.jsx](./src/spa/react/components/Cloud.jsx)
 
@@ -339,7 +369,7 @@ A sample code to show the use of `scrollmonitor-react`:
 
 
 <a id="extra-external-css-fro-shadow-doms"></a>
-### 3-6. Web Components: Load External CSS for Shadow DOMs
+### 3-7. Web Components: Load External CSS for Shadow DOMs
 
 `to-string-loader` is a handy loader for external CSS files
 to your Web Components to apply styles to Shadow DOMs.
@@ -390,7 +420,7 @@ class BurgerHeader extends HTMLElement {
 
 
 <a id="extra-web-components-without-class"></a>
-### 3-7. Web Components: No `class` Syntax
+### 3-8. Web Components: No `class` Syntax
 
 Some of you may prefer not using ES6 `class` syntax,
 but want to go the old fashion way (using `prototype`).  
@@ -399,7 +429,7 @@ but want to go the old fashion way (using `prototype`).
 
 
 <a id="extra-apply-styles-to-slot"></a>
-### 3-8. Web Components: Apply styles to `slot`
+### 3-9. Web Components: Apply styles to `slot`
 
 Applying styles to CSS classes within the custom elements are easy.  
 However, you want styles for `slot` given from the parent.
@@ -441,7 +471,7 @@ div#message-wrapper slot[name=message] {
 
 
 <a id="extra-nunjucks-partials"></a>
-### 3-9. Express: Include Nunjucks Partials
+### 3-10. Express: Include Nunjucks Partials
 
 Many Express view templates allow you
 to include partial templates, and so does Nunjucks.
@@ -455,7 +485,7 @@ ${require('./partials/footer/template.njk')}
 
 
 <a id="extra-cors-errors-for-localhost"></a>
-### 3-10. CORS Errors Fetching from `localhost`
+### 3-11. CORS Errors Fetching from `localhost`
 
 You run your app locally, and Chrome raises a CORS error
 when you attempt to `fetch` external resources.  
@@ -467,7 +497,7 @@ What you probablly want is: https://cors-anywhere.herokuapp.com/
 
 
 <a id="extra-node-profiler"></a>
-### 3-11. Using Node Profiler
+### 3-12. Using Node Profiler
 
 If you have never used it before, it is probably the time.  
 
