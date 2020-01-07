@@ -10,5 +10,10 @@ exports[`renders without crashing 1`] = `
   >
     Toppings
   </NavLink>
+  <NavLink
+    to="/cloud"
+  >
+    Cloud
+  </NavLink>
 </Fragment>
 `;

@@ -12,6 +12,7 @@ import anime from 'animejs/lib/anime.min.js';
 import { css } from '@emotion/core';
 import tw from 'tailwind.macro';
 import { Watch } from 'scrollmonitor-react';
+import PropTypes from 'prop-types';
 
 import { cloud } from '../cloud';
 
@@ -32,6 +33,11 @@ ${tw`flex flex-col flex-no-wrap justify-center items-center`}
       {children}
     </div>
   );
+};
+
+ContentWrapper.propTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 const sharedCSS = 'position:relative;font-size:3em;';
