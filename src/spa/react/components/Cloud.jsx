@@ -14,7 +14,7 @@ import tw from 'tailwind.macro';
 import { Watch } from 'scrollmonitor-react';
 import PropTypes from 'prop-types';
 
-import { cloud } from '../cloud';
+import { cloud } from './cloud';
 
 const extractPos = (id = '') => Number(id.replace('content', '')) - 1;
 

@@ -915,7 +915,7 @@ Install `supervisor`, and do this:
 [./package.json](./package.json)
 
 ```json
-  "start": "supervisor -e html,js dist/server.js",
+  "start": "NODE_ENV=development supervisor -e njk dist/server.js"
 ```
 
 

@@ -39,24 +39,20 @@ if (process.env.NODE_ENV !== 'production') {
     },
   }));
 
-  const defaultHotOptions = {
+  const defaultHmrOptions = {
     log: console.log,
     heartbeat: 10 * 1000,
     logLevel: 'info',
   };
 
-  // HMR only for "normal" and "react".
   [
-    { index: 0, path: '/__webpack_hmr', }, // normal
-    { index: 1, path: '/pizza/__webpack_hmr', } // react
+    { index: 0, path: '/__webpack_hmr', }, // Normal Express app
+    { index: 1, path: '/pizza/__webpack_hmr', } // React app
   ].forEach(({ index, path }) => {
     app.use(
       webpackHotMiddleware(
         compilers.compilers[index],
-        {
-          ...defaultHotOptions,
-          path
-        }
+        { ...defaultHmrOptions, path }
       )
     );
   });

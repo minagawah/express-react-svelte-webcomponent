@@ -1,6 +1,6 @@
 {
   "name": "express-react-svelte-webcomponent",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": false,
   "description": "Webpack multi-compiler example to bundle builds for React, Svelte, Web Components, and normal Express view templates.",
   "engines": {
@@ -15,7 +15,8 @@
     "build:dev": "yarn clean && NODE_ENV=development parallel-webpack --config webpack.config.js",
     "profile": "node --inspect-brk node_modules/webpack/bin/webpack.js --config webpack.config.js",
     "analyze": "yarn clean && ANALYZE=true yarn build:dev",
-    "start": "NODE_ENV=development node dist/server.js"
+    "start": "NODE_ENV=development node dist/server.js",
+    "start:supervisor": "NODE_ENV=development supervisor -e njk dist/server.js"
   },
   "repository": "https://github.com/minagawah/express-react-svelte-webcomponent.git",
   "homepage": "",
