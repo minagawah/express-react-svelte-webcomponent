@@ -27,7 +27,7 @@
     "Express",
     "Web Components"
   ],
-  "author": "Hiroki Minagawa <minagawa@tokyo800.jp>",
+  "author": "mina <mina@tokyo800.jp>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/minagawah/express-react-svelte-webcomponent/issues"
