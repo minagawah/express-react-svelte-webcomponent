@@ -45,7 +45,7 @@
     "react-router-dom": "^5.1.2",
     "react-use": "^13.14.0",
     "scrollmonitor-react": "^2.4.1",
-    "svelte": "^3.16.7",
+    "svelte": "^3.49.0",
     "tailwind.macro": "^1.0.0-alpha.10"
   },
   "devDependencies": {
